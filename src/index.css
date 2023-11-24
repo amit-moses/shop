@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.button_plus {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #095776;
+}
+
+.button_plus:after {
+  content: '';
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 4px;
+  width: 50%;
+  background: #095776;
+  top: 50%;
+  left: 50%;
+}
+
+.plus:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #095776;
+  height: 50%;
+  width: 4px;
+}
+
+.button_plus:hover:before,
+.button_plus:hover:after {
+  background: #fff;
+  transition: 0.2s;
+}
+
+.button_plus:hover {
+  background-color: #095776;
+  transition: 0.2s;
+}
+
+
+
+
+
+
+
+
+.loader-demo-box {
+  display: inline-block;
+  width: 39px;
+  border-color: #a3a4a5 !important;
+}
+
+.rounded,
+.loader-demo-box {
+  border-radius: 0.25rem !important
+}
+
+
+
+.jumping-dots-loader {
+  border-radius: 100%;
+  position: relative;
+  margin: 0 auto
+}
+
+.jumping-dots-loader span {
+  display: inline-block;
+  border-radius: 100%;
+  background-color: rgba(241, 83, 110, 0.8);
+}
+
+.jumping-dots-loader span:nth-child(1) {
+  animation: bounce 1s ease-in-out infinite
+}
+
+.jumping-dots-loader span:nth-child(2) {
+  animation: bounce 1s ease-in-out 0.33s infinite
+}
+
+.jumping-dots-loader span:nth-child(3) {
+  animation: bounce 1s ease-in-out 0.66s infinite
+}
+
+@keyframes bounce {
+
+  0%,
+  75%,
+  100% {
+      -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+      -o-transform: translateY(0);
+      transform: translateY(0)
+  }
+
+  25% {
+      -webkit-transform: translateY(-90%);
+      -ms-transform: translateY(-90%);
+      -o-transform: translateY(-90%);
+      transform: translateY(-90%)
+  }
+}
