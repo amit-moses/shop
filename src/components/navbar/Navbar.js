@@ -59,7 +59,7 @@ function Navbar({cartitems, categories, filter_func, myfilter, search}) {
               </li>
             </ul>
             <div className="d-flex">
-              <a className="btn btn-outline-dark" type="submit" href="https://react-shop-jgrv.onrender.com/mycart/">
+              <a className="btn btn-outline-dark" type="submit" href="https://shop-react.onrender.com/mycart">
                 <i className="bi-cart-fill me-1"></i>
                 Cart
                 <span className="badge bg-dark text-white ms-1 rounded-pill">
