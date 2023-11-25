@@ -11,6 +11,8 @@ function App() {
   const [cartData, setCartData] = useState([]);
   const [cartList, setCartList] = useState([]);
   const [totalPay, setTotalPay] = useState(0);
+  const [productsList, setProductsList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
 
   const api_url = "https://shop-rest.onrender.com/"
   function setMyCart(data){
@@ -29,7 +31,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
+        <Route path="/" element={<Home productsList={productsList} setProductsList={setProductsList} categoryList={categoryList} setCategoryList={setCategoryList} set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
         <Route path="/edit" element={<Edit api_url={api_url} />} />
         <Route path="/mycart" element={<Cart api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />
       </Routes>

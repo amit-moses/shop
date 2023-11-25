@@ -4,9 +4,9 @@ import ProductCard from "./ProductCard";
 import Navbar from "../navbar/Navbar";
 import Loader from "../Loader";
 
-function Home({cartList, api_url, set_cart}) {
-  const [productsList, setProductsList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
+function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList}) {
+  const [pList, setPlist] = useState(productsList);
+  const [cList, setClist] = useState(categoryList);
   const [filter, setFilter] = useState(0);
   const [searchKey, setSearchKey] = useState("");
 
@@ -19,10 +19,10 @@ function Home({cartList, api_url, set_cart}) {
     
     const api = "https://shop-rest.onrender.com/"
     axios.get(api + "category/").then((res) => {
-      setCategoryList(res.data);
+      setClist(res.data);
     });
     axios.get(api + "products/").then((res) => {
-      setProductsList(res.data);
+      setPlist(res.data);
     });
   }, []);
   
@@ -31,6 +31,8 @@ function Home({cartList, api_url, set_cart}) {
     if(query.length) return parseInt(query[0].quantity);
     else return 0;
   }
+  setCategoryList(cList);
+  setProductsList(pList);
   return (
     <div>
       {/* <!-- Navigation--> */}
