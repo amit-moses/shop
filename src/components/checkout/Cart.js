@@ -36,7 +36,7 @@ function Cart({ cartList, set_cart, api_url, cart_data }) {
                 
 
               </div>
-              {cartList.map((cartitem, index) => (
+              {cartList.sort((a, b) => a.id - b.id).map((cartitem, index) => (
                 <CartRow
                 api_url={api_url}
                   key={index}
