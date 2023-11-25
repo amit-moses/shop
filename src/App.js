@@ -27,15 +27,13 @@ function App() {
   }, []);
   
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
         <Route path="/edit" element={<Edit api_url={api_url} />} />
         <Route path="/mycart" element={<Cart api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />
       </Routes>
     </BrowserRouter>
-    </>
   );
 }
 
