@@ -56,7 +56,7 @@ function Total({set_cart, api_url, cart_data}) {
           <Loader isLoad={true} inCart={''} loaderSize={10}/>
         </div>: ""}
         {errorMsg? <div className="alert alert-danger" role="alert">
-          {errorMsg} is not availble!
+          {errorMsg} is not available!
         </div>: ""}
         
 
