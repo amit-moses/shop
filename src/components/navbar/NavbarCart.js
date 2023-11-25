@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function NavbarCart() {
 return (
   <>
@@ -25,9 +27,9 @@ return (
         </ul>
 
           <div className="d-flex">
-            <button className="btn btn-outline-dark" onClick={()=>window.history.back()}>
+            <Link to="/" className="btn btn-outline-dark">
               back
-            </button>
+            </Link>
           </div>
         </div>
       </div>

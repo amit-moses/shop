@@ -14,7 +14,7 @@ function Cart({ cartList, set_cart, api_url, cart_data }) {
   }
   return (
     <>
-      <NavbarCart id={"mymodal"}/>
+      <NavbarCart />
       <div className="mycart">
         <div className="">
           <div className="row">
