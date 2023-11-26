@@ -4,29 +4,29 @@ import ProductCard from "./ProductCard";
 import Navbar from "../navbar/Navbar";
 import Loader from "../Loader";
 
-function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList}) {
-  // const [pList, setPlist] = useState(productsList);
-  // const [cList, setClist] = useState(categoryList);
+function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList, cart_id, nav_loader}) {
   const [filter, setFilter] = useState(0);
   const [searchKey, setSearchKey] = useState("");
-
+  
   function help_filter(myproduct){
     let to_return = filter? parseInt(myproduct.category) === parseInt(filter): true;
     if(searchKey) return to_return && myproduct.name.toLowerCase().includes(searchKey.toLowerCase());
     else return to_return;
   }
-  useEffect(() => {
-    
-    const api = "https://shop-rest.onrender.com/"
-    axios.get(api + "category/").then((res) => {
-      // setClist(res.data);
-      setCategoryList(res.data)
-      
-    });
+  function updateProducts(api){
     axios.get(api + "products/").then((res) => {
-      // setPlist(res.data);
-      setProductsList(res.data)
+      setProductsList(res.data);
     });
+  }
+  function updateCategorey(api){
+    axios.get(api + "category/").then((res) => {
+      setCategoryList(res.data);
+    });
+  }
+  useEffect(() => {
+    const api = "https://shop-rest.onrender.com/"
+    updateCategorey(api);
+    updateProducts(api);
   }, []);
   
   function quantity_in_cart(id_pro){
@@ -34,12 +34,11 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
     if(query.length) return parseInt(query[0].quantity);
     else return 0;
   }
-  // setCategoryList(cList);
-  // setProductsList(pList);
+
   return (
     <div>
       {/* <!-- Navigation--> */}
-      <Navbar cartitems={cartList.length} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
+      <Navbar nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
       {/* <!-- Section--> */}
       <section className="py-5">
         {0 === productsList.length? <div className="text-center">
@@ -49,7 +48,7 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
         <div className="container px-4 px-lg-5 mt-5">
           <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
           {productsList.filter((item)=> help_filter(item)).map((product, index) => (
-            <ProductCard set_cart={set_cart} api_url={api_url} key={index} product={product} in_cart={quantity_in_cart(product.id)}/>
+            <ProductCard cart_id={cart_id} set_cart={set_cart} api_url={api_url} key={index} product={product} in_cart={quantity_in_cart(product.id)}/>
             ))}
           </div>
         </div>

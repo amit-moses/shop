@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
+import Loader from "../Loader";
 
-function Navbar({cartitems, categories, filter_func, myfilter, search}) {
+function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loader}) {
+      function logout(){
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('cart_id');
+      window.location.reload();
+    }
     function get_cat_name(){
         if(myfilter){
             const query = categories.filter((cat) => parseInt(myfilter) === parseInt(cat.id))
@@ -60,14 +67,31 @@ function Navbar({cartitems, categories, filter_func, myfilter, search}) {
                 </ul>
               </li>
             </ul>
-            <div className="d-flex">
-              <Link to="/mycart" className="btn btn-outline-dark">
-                <i className="bi-cart-fill me-1"></i>
-                  Cart
-                  <span className="badge bg-dark text-white ms-1 rounded-pill">
-                    {cartitems}
-                  </span>
-              </Link>
+            <div className="d-flex" style={{marginLeft:"9px"}}>
+                
+                <Link to="/mycart" className="btn btn-outline-dark">
+                  {nav_loader ? <Loader inCart={""} isLoad={true} loaderSize={8}/>:
+                  <>
+                    <i className="bi-cart-fill me-1"></i>
+                    Cart
+                    <span className="badge bg-dark text-white ms-1 rounded-pill">
+                      {cartitems.length}
+                    </span>
+                  </>}
+                    
+                </Link>
+            </div>
+            <div className="d-flex" style={{marginLeft:"9px"}}>
+              {localStorage.getItem('username') ?
+                <button onClick={() => logout()} className="btn btn-outline-dark">
+                  <i className="bi-cart-fill me-1"></i>
+                  Log-out
+                </button> :
+                <Link to="/login" className="btn btn-outline-dark">
+                  <i className="bi-cart-fill me-1"></i>
+                  Login
+                </Link>
+              }
             </div>
           </div>
         </div>

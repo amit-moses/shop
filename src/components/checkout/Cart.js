@@ -2,11 +2,10 @@ import axios from "axios";
 import NavbarCart from "../navbar/NavbarCart";
 import CartRow from "./CartRow";
 import Total from "./Total";
-import Cookies from "js-cookie";
 
 function Cart({ cartList, set_cart, api_url, cart_data }) {
   function clear_cart(){
-    axios.delete(api_url + "cart/" + Cookies.get("cart_id") + "/").then((res) => {
+    axios.delete(api_url + "cart/" + cart_data.id + "/").then((res) => {
       console.log(res.data)
       set_cart(res.data)
       window.history.back();
@@ -38,6 +37,7 @@ function Cart({ cartList, set_cart, api_url, cart_data }) {
               </div>
               {cartList.sort((a, b) => a.id - b.id).map((cartitem, index) => (
                 <CartRow
+                cart_id={cart_data.id}
                 api_url={api_url}
                   key={index}
                   cartitem={cartitem}

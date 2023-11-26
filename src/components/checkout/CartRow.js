@@ -1,12 +1,11 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import Loader from "../Loader";
 import { useState } from "react";
 
-function CartRow({cartitem, set_cart, api_url}) {
+function CartRow({cartitem, set_cart, api_url, cart_id}) {
   const [loader, setLoader] = useState(false);
     function update_cart(to_change){
-        const urlm = Cookies.get("cart_id")?Cookies.get("cart_id"):'0'
+        const urlm = cart_id?cart_id:'0'
         const product_to_add = {
           product: cartitem.product.id,
           quantity: to_change,
@@ -15,7 +14,7 @@ function CartRow({cartitem, set_cart, api_url}) {
         axios
           .put(api_url + "cart/"+urlm+"/", product_to_add)
           .then((res) => {
-            Cookies.set('cart_id', res.data.id, { expires: 7 });
+            if(!cart_id){localStorage.setItem("cart_id", res.data.id);}
             set_cart(res.data);
             setLoader(false);
           });

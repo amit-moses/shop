@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import Loader from "../Loader";
 
@@ -14,7 +13,7 @@ function Total({set_cart, api_url, cart_data}) {
   function update_promo(promo){
     setError();
     setLoader(Boolean(promo));
-    axios.post(api_url + "updatepromo/" + Cookies.get("cart_id") + "/", {promocode: promo})
+    axios.post(api_url + "updatepromo/" + cart_data.id + "/", {promocode: promo})
     .then((res) => {
       if(promo !== -1 ){
         if(! res.data.promocode){setError(promo);}
