@@ -47,12 +47,12 @@ function ProductCard({ product, in_cart, api_url, set_cart }) {
           <div className="text-center">
             {0 < in_cart? 
             <>
-            <button style={{marginRight: "7px", visibility: in_cart < product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">+</button>
-            <Loader isLoad={loader} inCart={in_cart < product.stock? in_cart: "last " + in_cart} loaderSize={10}/>
-            <button style={{marginLeft: "7px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto">-</button>
+            <button style={{marginRight: "10px", visibility: in_cart < product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">+</button>
+            <Loader isLoad={loader} inCart={in_cart < product.stock? in_cart: "last " + in_cart} loaderSize={8}/>
+            <button style={{marginLeft: "10px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto">-</button>
             </>
             : 
-            loader ? <Loader isLoad={true} inCart={''} loaderSize={10} />: 0 < product.stock? <button onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">Add to cart</button>: <button disabled className="btn btn-outline-dark mt-auto">Out of stock</button>
+            loader ? <Loader isLoad={true} inCart={''} loaderSize={8} />: 0 < product.stock? <button onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">Add to cart</button>: <button disabled className="btn btn-outline-dark mt-auto">Out of stock</button>
             }
           </div>
         </div>

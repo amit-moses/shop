@@ -121,8 +121,8 @@ code {
 
 
 @media only screen and (max-width: 767px) {
-  .loader-demo-box {
-    width: 30px; 
+  .loader-demo-box1 {
+    width: 20px; 
   }
   .btn-m{
     width: 22px;
