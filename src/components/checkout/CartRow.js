@@ -37,9 +37,9 @@ function CartRow({cartitem, set_cart, api_url}) {
         </div>
 
         <div className="col">
-        <button style={{marginRight: "3px", visibility: cartitem.quantity < cartitem.product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto text-center btn-m">+</button>
+        <button disabled={loader} style={{marginRight: "3px", visibility: cartitem.quantity < cartitem.product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto text-center btn-m">+</button>
         <Loader isLoad={loader} inCart={cartitem.quantity < cartitem.product.stock? cartitem.quantity: "last " + cartitem.quantity} loaderSize={7}/>
-        <button style={{marginLeft: "3px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto text-center btn-m">-</button>
+        <button disabled={loader} style={{marginLeft: "3px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto text-center btn-m">-</button>
         </div>
 
         <div className="col">
