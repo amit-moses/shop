@@ -38,7 +38,7 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
   return (
     <div>
       {/* <!-- Navigation--> */}
-      <Navbar nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
+      <Navbar carti={cart_id} nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
       {/* <!-- Section--> */}
       <section className="py-5">
         {0 === productsList.length? <div className="text-center">

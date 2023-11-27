@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
 
-function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loader}) {
+function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loader, carti}) {
       function logout(){
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh');
       localStorage.removeItem('username');
-      localStorage.removeItem('cart_id');
+      if(parseInt(carti) === parseInt(localStorage.getItem('cart_id'))){localStorage.removeItem('cart_id')}
       window.location.reload();
     }
     function get_cat_name(){

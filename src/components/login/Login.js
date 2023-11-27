@@ -19,11 +19,13 @@ function Login({api_url, refi}) {
             password: ed_password,
           })
           .then((res) => {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.access}`;
             setErr(false);
+            console.log(res.data);
             localStorage.setItem("token", res.data.access);
+            localStorage.setItem("refresh", res.data.refresh);
             localStorage.setItem("username", ed_username);
             refi();
-            // axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.access}`;
             setLoader(false);
             navigate_to('/');
           }).catch(error => {
