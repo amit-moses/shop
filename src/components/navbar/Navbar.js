@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 
 function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loader, logout}) {
+  const my_username = localStorage.getItem('username');
     function get_cat_name(){
         if(myfilter){
             const query = categories.filter((cat) => parseInt(myfilter) === parseInt(cat.id))
@@ -15,9 +16,9 @@ function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loade
     <nav style={{marginTop: "10px"}} className="navbar navbar-expand-lg "></nav>
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container px-4 px-lg-5">
-          <a className="navbar-brand" href="#!">
-            Shop1
-          </a>
+          <Link className="navbar-brand" to="/">
+            React Shop
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -56,11 +57,11 @@ function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loade
                       {category.name}
                     </button>
                   </li>
-
                   ))}
                 </ul>
               </li>
             </ul>
+            {my_username? <h5 style={{marginRight: "15px"}}>hello, {my_username}</h5>:""}
             <div className="d-flex" style={{marginLeft:"9px"}}>
                 
                 <Link to="/mycart" className="btn btn-outline-dark">

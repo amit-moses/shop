@@ -2,13 +2,20 @@ import axios from "axios";
 import NavbarCart from "../navbar/NavbarCart";
 import CartRow from "./CartRow";
 import Total from "./Total";
+import Loader from "../Loader";
+import { useState } from "react";
 
-function Cart({ cartList, set_cart, api_url, cart_data }) {
+function Cart({ cartList, set_cart, api_url, cart_data, data_loader }) {
+  const [loader, setLoader] = useState(false);
   function clear_cart(){
+    setLoader(true);
     axios.delete(api_url + "cart/" + cart_data.id + "/").then((res) => {
-      console.log(res.data)
-      set_cart(res.data)
+      setLoader(false);
+      set_cart(res.data);
       window.history.back();
+    }).catch(error => {
+      setLoader(false);
+      console.log(error);
     });
   }
   return (
@@ -26,14 +33,14 @@ function Cart({ cartList, set_cart, api_url, cart_data }) {
                     </h4>
                   </div>
                   <div className="col align-self-center text-right text-muted">
-                    {cartList.length} items
+                  {data_loader? <Loader isLoad={true} loaderSize={10} inCart={""}/>:
+                    <>{cartList.length} items</>
+                  }
                   </div>
                   <div className="col align-self-center text-right text-muted">
-                  {cartList.length? <button onClick={clear_cart} className="btn btn-outline-dark">Clear cart</button>: ""}
+                  {cartList.length? <button onClick={clear_cart} className="btn btn-outline-dark">{loader? <Loader loaderSize={8} isLoad={true} inCart={""}/>: "Clear cart"}</button>: ""}
                   </div>
                 </div>
-                
-
               </div>
               {cartList.sort((a, b) => a.id - b.id).map((cartitem, index) => (
                 <CartRow

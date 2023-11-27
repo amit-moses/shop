@@ -5,8 +5,8 @@ import Home from "./components/home/Home";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cart from "./components/checkout/Cart";
-import Login from "./components/login/Login";
 import { jwtDecode } from "jwt-decode";
+import LoginRegister from "./components/login/LoginRegister";
 
 function App() {
   const [cartData, setCartData] = useState([]);
@@ -101,8 +101,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home logout={logout} nav_loader={loader} cart_id={my_cart1} productsList={productsList} setProductsList={setProductsList} categoryList={categoryList} setCategoryList={setCategoryList} set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
         <Route path="/edit" element={<Edit api_url={api_url} />} />
-        <Route path="/login" element={<Login refi={refresh_func} api_url={api_url}/>} />
-        <Route path="/mycart" element={<Cart api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />
+        <Route path="/login" element={<LoginRegister refi={refresh_func} api_url={api_url}/>} />
+        <Route path="/mycart" element={<Cart data_loader={loader} api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />
       </Routes>
     </BrowserRouter>
   );
