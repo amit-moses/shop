@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import Navbar from "../navbar/Navbar";
 import Loader from "../Loader";
 
-function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList, cart_id, nav_loader}) {
+function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList, cart_id, nav_loader, logout}) {
   const [filter, setFilter] = useState(0);
   const [searchKey, setSearchKey] = useState("");
   
@@ -16,11 +16,15 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
   function updateProducts(api){
     axios.get(api + "products/").then((res) => {
       setProductsList(res.data);
+    }).catch(error => {
+      console.log(error);
     });
   }
   function updateCategorey(api){
     axios.get(api + "category/").then((res) => {
       setCategoryList(res.data);
+    }).catch(error => {
+      console.log(error);
     });
   }
   useEffect(() => {
@@ -38,7 +42,7 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
   return (
     <div>
       {/* <!-- Navigation--> */}
-      <Navbar carti={cart_id} nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
+      <Navbar logout={logout} nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
       {/* <!-- Section--> */}
       <section className="py-5">
         {0 === productsList.length? <div className="text-center">

@@ -17,6 +17,11 @@ function CartRow({cartitem, set_cart, api_url, cart_id}) {
             if(!cart_id){localStorage.setItem("cart_id", res.data.id);}
             set_cart(res.data);
             setLoader(false);
+          }).catch(error => {
+            console.log("this cart dosen't belong to you");
+            localStorage.removeItem('cart_id');
+            setLoader(false);
+            window.location.reload();
           });
       }
       const totalfor = cartitem.product.price * cartitem.quantity;

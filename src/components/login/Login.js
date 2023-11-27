@@ -10,6 +10,7 @@ function Login({api_url, refi}) {
   const [errMsg, setErr] = useState(false);
   const [loader, setLoader] = useState(false);
   const navigate_to = useNavigate('/');
+  if(localStorage.getItem('refresh')){navigate_to('/');}
   function login(){
     setLoader(true);
     setErr(false);
@@ -21,7 +22,6 @@ function Login({api_url, refi}) {
           .then((res) => {
             axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.access}`;
             setErr(false);
-            console.log(res.data);
             localStorage.setItem("token", res.data.access);
             localStorage.setItem("refresh", res.data.refresh);
             localStorage.setItem("username", ed_username);

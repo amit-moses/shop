@@ -16,8 +16,8 @@ function App() {
   const [categoryList, setCategoryList] = useState([]);
   const [loader, setLoader] = useState(false);
   const [my_cart1, setCartId] = useState(localStorage.getItem('cart_id'));
+  // const api_url = "http://127.0.0.1:8000/"   
   const api_url = "https://shop-rest.onrender.com/"
-  
 
   function setMyCart(data, save){
       setCartList(data.cartitem); 
@@ -29,7 +29,7 @@ function App() {
 
   function user_cart1(my_cart, my_token){
     axios.defaults.headers.common["Authorization"] = `Bearer ${my_token}`;
-    axios.get(api_url + "usercart/" + jwtDecode(my_token).user_id + "/", {
+    axios.get(api_url + "usercart/", {
       params: {cart_id: my_cart1}
     }).then((res) => {
       setMyCart(res.data, false);
@@ -51,13 +51,20 @@ function App() {
     });
   }
 
+  function user_cart_out(){
+    logout();
+    guest_cart();
+  }
 
   function guest_cart(my_cart){
     axios.get(api_url + "cart/" + my_cart + "/").then((res) => {
       setMyCart(res.data, true);
       setLoader(false);
     }).catch(error => {
-      console.log(error);
+      console.log("this cart dosen't belong to you");
+      localStorage.removeItem('cart_id');
+      setCartId(0);
+      setLoader(false);
     });
   }
 
@@ -66,14 +73,22 @@ function App() {
     const currentTime = Date.now();
     return currentTime < expirationTime
   }
+  function logout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('username');
+    if(parseInt(my_cart1) === parseInt(localStorage.getItem('cart_id'))){localStorage.removeItem('cart_id');}
+    window.location.reload();
+  }
   function refresh_func(){
     const my_token = localStorage.getItem('token');
+    const my_refresh = localStorage.getItem('refresh');
     setLoader(my_token || my_cart1);
-    if(my_token){
+    if(my_token && my_refresh){
       console.log(check_session(my_token));
+      if(!check_session(my_refresh)){user_cart_out();}
       if(check_session(my_token)){user_cart1(my_cart1,my_token);}
       else{user_cart2(my_cart1);}
-        
     }
     else if(my_cart1){guest_cart(my_cart1)}
   }
@@ -84,7 +99,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home nav_loader={loader} cart_id={my_cart1} productsList={productsList} setProductsList={setProductsList} categoryList={categoryList} setCategoryList={setCategoryList} set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
+        <Route path="/" element={<Home logout={logout} nav_loader={loader} cart_id={my_cart1} productsList={productsList} setProductsList={setProductsList} categoryList={categoryList} setCategoryList={setCategoryList} set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
         <Route path="/edit" element={<Edit api_url={api_url} />} />
         <Route path="/login" element={<Login refi={refresh_func} api_url={api_url}/>} />
         <Route path="/mycart" element={<Cart api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />

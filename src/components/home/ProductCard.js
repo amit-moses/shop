@@ -19,6 +19,11 @@ function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
         if(!cart_id && !localStorage.getItem('token')){localStorage.setItem("cart_id", res.data.id);}
         set_cart(res.data)
         setLoader(false);
+      }).catch(error => {
+        console.log("this cart dosen't belong to you");
+        localStorage.removeItem('cart_id');
+        setLoader(false);
+        window.location.reload();
       });
   }
     const boxstyle = {

@@ -8,7 +8,6 @@ function Total({set_cart, api_url, cart_data}) {
   const [errorMsg, setError] = useState();
   const [loader, setLoader] = useState(false);
 
-  // const [promoMsg, setPromoMsg] = useState();
 
   function update_promo(promo){
     setError();
@@ -19,14 +18,16 @@ function Total({set_cart, api_url, cart_data}) {
         if(! res.data.promocode){setError(promo);}
         else if(cart_data.promocode){
           if(cart_data.promocode.code !== promo ){setError(promo);}
-        }
-        
+        } 
       }
       if(promo !== -1){
         setPromo("");
       }
       set_cart(res.data);
       setLoader(false);
+    }).catch(error => {
+      setLoader(false);
+      console.log(error);
     });
     
   }
