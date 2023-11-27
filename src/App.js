@@ -16,7 +16,7 @@ function App() {
   const [categoryList, setCategoryList] = useState([]);
   const [loader, setLoader] = useState(false);
   const [my_cart1, setCartId] = useState(localStorage.getItem('cart_id'));
-  const api_url = "http://127.0.0.1:8000/"
+  const api_url = "https://shop-rest.onrender.com/"
   
 
   function setMyCart(data, save){
