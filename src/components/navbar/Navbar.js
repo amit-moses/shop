@@ -17,6 +17,7 @@ function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loade
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container px-4 px-lg-5">
           <Link className="navbar-brand" to="/">
+          <img style={{height: "30px"}} src="/logo192.png" alt="..." />
             React Shop
           </Link>
           <button
