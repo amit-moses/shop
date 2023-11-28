@@ -16,8 +16,8 @@ function App() {
   const [categoryList, setCategoryList] = useState([]);
   const [loader, setLoader] = useState(false);
   const [my_cart1, setCartId] = useState(localStorage.getItem('cart_id'));
-  // const api_url = "http://127.0.0.1:8000/"   
-  const api_url = "https://shop-rest.onrender.com/"
+  const api_url = "http://127.0.0.1:8000/"   
+  // const api_url = "https://shop-rest.onrender.com/"
 
   function setMyCart(data, save){
       setCartList(data.cartitem); 
@@ -73,6 +73,7 @@ function App() {
     const currentTime = Date.now();
     return currentTime < expirationTime
   }
+
   function logout(){
     localStorage.removeItem('token');
     localStorage.removeItem('refresh');
@@ -80,6 +81,7 @@ function App() {
     if(parseInt(my_cart1) === parseInt(localStorage.getItem('cart_id'))){localStorage.removeItem('cart_id');}
     window.location.reload();
   }
+
   function refresh_func(){
     const my_token = localStorage.getItem('token');
     const my_refresh = localStorage.getItem('refresh');
@@ -87,11 +89,12 @@ function App() {
     if(my_token && my_refresh){
       console.log(check_session(my_token));
       if(!check_session(my_refresh)){user_cart_out();}
-      if(check_session(my_token)){user_cart1(my_cart1,my_token);}
+      else if(check_session(my_token)){user_cart1(my_cart1,my_token);}
       else{user_cart2(my_cart1);}
     }
     else if(my_cart1){guest_cart(my_cart1)}
   }
+
   useEffect(() => {
     refresh_func();
   }, []);
