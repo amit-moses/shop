@@ -1,14 +1,22 @@
 import axios from "axios";
 import { useState } from "react";
+import Loader from "../Loader";
 
-function Product({ product, refresh, category, api_url }) {
+function Product({
+  product,
+  refi,
+  category,
+  api_url,
+  setProductsList,
+  productList,
+}) {
   const [editor, setEditor] = useState(false);
   const [ed_name, setEditorName] = useState(product.name);
   const [ed_price, setEditorPrice] = useState(product.price);
   const [ed_cat, setEditorCat] = useState(product.category);
   const [ed_stock, setEditorStock] = useState(product.stock);
   const [ed_url, setEditorUrl] = useState(product.image);
-
+  const [pr_loader, setploader] = useState(false);
 
   function setSaveOrEditor() {
     if (editor) {
@@ -18,14 +26,15 @@ function Product({ product, refresh, category, api_url }) {
         price: ed_price,
         stock: ed_stock,
         category: ed_cat,
-        image: ed_url
+        image: ed_url,
       };
+      setploader(true);
       axios
         .put(api_url + "product/" + product.id + "/", product_to_update)
         .then(function (response) {
           const mok = !editor;
           setEditor(mok);
-          refresh()
+          setploader(false);
         });
     } else {
       console.log(api_url + "product/" + product.id + "/");
@@ -33,15 +42,20 @@ function Product({ product, refresh, category, api_url }) {
       setEditor(mok);
     }
   }
-  function category_name_by_id(id){
+  function category_name_by_id(id) {
     for (const element of category) {
-      if(parseInt(element.id) === parseInt(id)) return element.name;
+      if (parseInt(element.id) === parseInt(id)) return element.name;
     }
-    return "err"
+    return "err";
   }
   function del_func() {
+    const last_id = category.id;
+    setploader(true);
     axios.delete(api_url + "product/" + product.id + "/").then((res) => {
-      refresh();
+      const deleted_arr = productList.filter((item) => item.id !== last_id);
+      setProductsList(deleted_arr);
+      refi();
+      setploader(false);
     });
   }
   return (
@@ -76,22 +90,27 @@ function Product({ product, refresh, category, api_url }) {
           ></input>
         </td>
         <td>
-          {/* <input type="number" onChange={(e) => setEditorCat(e.target.value)} disabled={editor ? (false) : (true)} className=  {editor ? ("form-control") : ("form-control-plaintext")} value={ed_cat}></input> */}
-          {editor ? <select
-            onChange={(e) => setEditorCat(e.target.value)}
-            aria-label="Default select example"
-            className="form-select"
-          >
-            {category.map((item, index) => (
-              <option
-                selected={product.category === item.id ? true : false}
-                value={item.id}
-                key={index}
-              >
-                {item.name}
-              </option>
-            ))}
-          </select> : <label className="form-control-plaintext">{category_name_by_id(product.category)}</label>}  
+          {editor ? (
+            <select
+              value={product.category}
+              onChange={(e) => setEditorCat(e.target.value)}
+              aria-label="Default select example"
+              className="form-select"
+            >
+              {category.map((item, index) => (
+                <option
+                  value={item.id}
+                  key={index}
+                >
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <label className="form-control-plaintext">
+              {category_name_by_id(product.category)}
+            </label>
+          )}
         </td>
         <td>
           <input
@@ -102,20 +121,34 @@ function Product({ product, refresh, category, api_url }) {
             value={ed_url}
           ></input>
         </td>
-        <td>
-          <button
-            onClick={() => setSaveOrEditor()}
-            type="button"
-            className="btn btn-primary"
-          >
-            {editor ? "Save" : "Edit"}
-          </button>
-        </td>
-        <td>
-          <button onClick={del_func} type="button" className="btn btn-danger">
-            Delete
-          </button>
-        </td>
+        {pr_loader ? (
+          <td>
+            <Loader loaderSize={8} inCart={""} isLoad={true} />
+          </td>
+        ) : (
+          <>
+            <td>
+              <button
+                disabled={pr_loader}
+                onClick={() => setSaveOrEditor()}
+                type="button"
+                className="btn btn-primary"
+              >
+                {editor ? "Save" : "Edit"}
+              </button>
+            </td>
+            <td>
+              <button
+                disabled={pr_loader}
+                onClick={del_func}
+                type="button"
+                className="btn btn-danger"
+              >
+                Delete
+              </button>
+            </td>
+          </>
+        )}
       </tr>
     </>
   );

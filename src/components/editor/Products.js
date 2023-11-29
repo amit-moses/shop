@@ -1,40 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import axios from "axios";
+import Loader from "../Loader";
 
-function Products({api_url}) {
-  const [productsList, setProductsList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-
+function Products({api_url, productsList, categoryList, setProductsList, refresh}) {
   const [pr_name, setProductName] = useState("");
   const [pr_price, setProductPrice] = useState(0);
   const [pr_stock, setProductStock] = useState(0);
   const [pr_cat, setProductCat] = useState(1);
   const [pr_image, setProductImage] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const [filter, setFilter] = useState(0);
-
-
+  const [load_add, setLoad] = useState(false);
+  const first = categoryList[0]
+useEffect(()=>{
+  if(first){
+    setProductCat(first.id);
+  }
+},[first]);
   function filter_cat(){
     if(parseInt(filter)) return productsList.filter((item)=>parseInt(item.category) === parseInt(filter));
     else return productsList;
   }
-  useEffect(() => {
-    const api = "https://shop-rest.onrender.com/"
-    axios.get(api + "category/").then((res) => {
-      setCategoryList(res.data);
-    });
-
-    axios.get(api + "products/").then((res) => {
-      setProductsList(res.data);
-    });
-  }, [refresh]);
-
-  const refresh_func = () => {
-    setRefresh(refresh + 1);
-  };
 
   function addProduct() {
+    setLoad(true);
     const product_to_add = {
       name: pr_name,
       price: pr_price,
@@ -45,14 +34,16 @@ function Products({api_url}) {
     axios
       .post(api_url + "products/", product_to_add)
       .then((res) => {
-        console.log(res.data);
-        setProductsList([...productsList, product_to_add]);
         setProductName("");
         setProductPrice(0);
         setProductCat(1);
         setProductStock(0);
         setProductImage("")
-        refresh_func()
+        refresh();
+        setLoad(false);
+      }).catch((res)=>{
+        console.log(res);
+        setLoad(false);
       });
   }
   function handleSubmit(event) {
@@ -66,7 +57,7 @@ function Products({api_url}) {
     <select
             onChange={(e) => setFilter(e.target.value)}
             aria-label="Default select example"
-            className="form-select col-md-12"
+            className="form-select col-md-12 mb-3"
           >
             <option
                 value="0"
@@ -83,7 +74,7 @@ function Products({api_url}) {
             ))}
           </select>
     </div>
-      <div className="col-md-6">
+      <div className="col-md-4">
         <form onSubmit={handleSubmit}>
           <div className="form-floating mb-3">
             <input
@@ -156,10 +147,11 @@ function Products({api_url}) {
             value={"add"}
             type="submit"
           ></input>
+          {load_add && <Loader loaderSize={8} inCart={""} isLoad={true}/>}
         </form>
       </div>
           
-      <div className="col-md-6">
+      <div className="col-md-8">
         <table className="table table-striped" border="1">
           <thead className="thead-dark">
             <tr>
@@ -173,7 +165,7 @@ function Products({api_url}) {
           </thead>
           <tbody id="tablebody">
             {filter_cat().map((product, index) => (
-              <Product api_url={api_url} key={index} category={categoryList} product={product} refresh={refresh_func} />
+              <Product refi={refresh} productList={productsList} setProductsList={setProductsList} api_url={api_url} key={index} category={categoryList} product={product} />
             ))}
           </tbody>
         </table>

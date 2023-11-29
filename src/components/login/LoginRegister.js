@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavbarCart from "../navbar/NavbarCart";
 import Register from "./Register";
 import Login from "./Login";
@@ -10,10 +10,17 @@ function LoginRegister({ api_url, refi, setCartId }) {
   const [isLogin, setLogin] = useState(true);
   const [errMsg, setErr] = useState(false);
   const [loader, setLoader] = useState(false);
-  const navigate_to = useNavigate("/");
-  if (localStorage.getItem("refresh")) {
-    navigate_to("/");
-  }
+  const navigate_to = useNavigate();
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("refresh")) {
+        navigate_to("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [navigate_to]);
 
   function login(my_username, my_password) {
     setLoader(true);
@@ -45,7 +52,7 @@ function LoginRegister({ api_url, refi, setCartId }) {
   return (
     <div className="py-5 container text-center">
       <NavbarCart />
-      <h1>{isLogin? "Login": "Register"}</h1>
+      <h1>{isLogin ? "Login" : "Register"}</h1>
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">

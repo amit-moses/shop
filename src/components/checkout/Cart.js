@@ -52,7 +52,7 @@ function Cart({ cartList, set_cart, api_url, cart_data, data_loader }) {
                 />
               ))}
             </div>
-            {cartList.length ? <Total price={cart_data.total} api_url={api_url} set_cart={set_cart} cart_data={cart_data} /> : ""}
+            {cartList.length && <Total price={cart_data.total} api_url={api_url} set_cart={set_cart} cart_data={cart_data} />}
           </div>
         </div>
       </div>

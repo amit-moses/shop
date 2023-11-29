@@ -17,6 +17,7 @@ function App() {
   const [loader, setLoader] = useState(false);
   const [my_cart_id, setCartId] = useState(0);
   const [refresh_add, setRefresh] = useState(0);
+  const [refresh_items, setRefreshItems] = useState(0);
   const api_url = "http://127.0.0.1:8000/";
   // const api_url = "https://shop-rest.onrender.com/"
 
@@ -50,6 +51,9 @@ function App() {
   function refresh_func() {
     setRefresh(refresh_add + 1);
   }
+  function refresh_func_item() {
+    setRefreshItems(refresh_items + 1);
+  }
 
   useEffect(() => {
     function updateProducts(api) {
@@ -75,7 +79,7 @@ function App() {
 
     updateCategorey(api_url);
     updateProducts(api_url);
-  }, []);
+  }, [refresh_items]);
 
   useEffect(() => {
     function get_token_cart(my_cart) {
@@ -107,6 +111,9 @@ function App() {
           setLoader(false);
         })
         .catch((error) => {
+          localStorage.removeItem("cart_id");
+          setCartId(0);
+          setLoader(false);
           console.log(error);
         });
     }
@@ -125,7 +132,7 @@ function App() {
     } else if (my_cart_id) {
       get_cart(my_cart_id, my_token);
     }
-  }, [refresh_add]);
+  }, [refresh_add, refresh_items]);
 
   return (
     <BrowserRouter>
@@ -145,7 +152,12 @@ function App() {
             />
           }
         />
-        <Route path="/edit" element={<Edit api_url={api_url} />} />
+        <Route path="/edit" element={<Edit api_url={api_url} 
+              productsList={productsList}
+              categoryList={categoryList}
+              refi={refresh_func_item} 
+              setCategoryList={setCategoryList}
+              setProductsList={setProductsList}/>} />
         <Route
           path="/login"
           element={

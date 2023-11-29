@@ -25,9 +25,9 @@ function Home({cartList, api_url, set_cart, productsList, categoryList, cart_id,
       <Navbar logout={logout} nav_loader={nav_loader} cartitems={cartList} categories={categoryList} filter_func={setFilter} myfilter={filter} search={setSearchKey}/>
       {/* <!-- Section--> */}
       <section className="py-5">
-        {0 === productsList.length? <div className="text-center">
+        {0 === productsList.length && <div className="text-center">
           <Loader isLoad={true} inCart={''} loaderSize={10}/>
-        </div> : ""}
+        </div>}
       
         <div className="container px-4 px-lg-5 mt-5">
           <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">

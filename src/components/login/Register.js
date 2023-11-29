@@ -47,13 +47,12 @@ function Register({api_url, loader, setLoader, login_func}) {
   return (
     <form method="POST" onSubmit={(event) => {event.preventDefault(); if(valid_register()){register_func();}}}>
         <Loader loaderSize={10} isLoad={loader}/>
-        {er_username || er_email || er_password? 
+        {(er_username || er_email || er_password) && 
           <div className="alert alert-danger" role="alert">
             <div>{er_username}</div>
             <div>{er_password}</div>
             <div>{er_email}</div>
-          </div>:""
-        }
+          </div>}
         <div className="form-floating mb-3 mt-3">
           <input onChange={(e) => {setUsername(e.target.value); setErUsername();}} type="username" placeholder="Username" className={er_username?"form-control is-invalid":"form-control"} id="floatingInput"></input>
           <label htmlFor="floatingInput">Username</label>
