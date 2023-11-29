@@ -38,7 +38,7 @@ function Edit({
     ] = `Bearer ${localStorage.getItem("token")}`;
 
     axios
-      .get("http://127.0.0.1:8000/promo/")
+      .get("https://shop-rest.onrender.com/promo/")
       .then((res) => {
         setPromoList(res.data);
       })
