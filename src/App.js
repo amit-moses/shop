@@ -15,97 +15,127 @@ function App() {
   const [productsList, setProductsList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [my_cart1, setCartId] = useState(localStorage.getItem('cart_id'));
-  const api_url = "http://127.0.0.1:8000/"   
+  const [my_cart_id, setCartId] = useState(localStorage.getItem('cart_id'));
+  const [refresh_add, setRefresh] = useState(0);
+  const api_url = "http://127.0.0.1:8000/";
   // const api_url = "https://shop-rest.onrender.com/"
 
-  function setMyCart(data, save){
-      setCartList(data.cartitem); 
-      setTotalPay(data.total);
-      setCartData((({ cartitem, ...rest }) => rest)(data));
-      if(save){localStorage.setItem("cart_id", data.id);}
-      setCartId(data.id);
+  function setMyCart(data) {
+    setCartList(data.cartitem);
+    setTotalPay(data.total);
+    setCartId(data.id)
+    setCartData((({ cartitem, ...rest }) => rest)(data));
+    if (!data.buyer) {
+      localStorage.setItem("cart_id", data.id);
+    }
   }
 
-  function user_cart1(my_cart, my_token){
-    axios.defaults.headers.common["Authorization"] = `Bearer ${my_token}`;
-    axios.get(api_url + "usercart/", {
-      params: {cart_id: my_cart1}
-    }).then((res) => {
-      setMyCart(res.data, false);
-      setLoader(false);
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-
-  function user_cart2(my_cart){
-    axios.post(api_url + "token/refresh/", { refresh: localStorage.getItem('refresh') })
-    .then((res) => {
-      console.log(res.data)
-      const new_token  = res.data.access;
-      localStorage.setItem("token", new_token);
-      user_cart1(my_cart, new_token)
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-
-  function user_cart_out(){
-    logout();
-    guest_cart();
-  }
-
-  function guest_cart(my_cart){
-    axios.get(api_url + "cart/" + my_cart + "/").then((res) => {
-      setMyCart(res.data, true);
-      setLoader(false);
-    }).catch(error => {
-      console.log("this cart dosen't belong to you");
-      localStorage.removeItem('cart_id');
-      setCartId(0);
-      setLoader(false);
-    });
-  }
-
-  function check_session(token){
+  function check_session(token) {
     const expirationTime = jwtDecode(token).exp * 1000;
     const currentTime = Date.now();
-    return currentTime < expirationTime
+    return currentTime < expirationTime;
   }
 
-  function logout(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh');
-    localStorage.removeItem('username');
-    if(parseInt(my_cart1) === parseInt(localStorage.getItem('cart_id'))){localStorage.removeItem('cart_id');}
+  function logout() {
+    const my_token = localStorage.getItem("token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+    if (jwtDecode(my_token).cart_id === parseInt(localStorage.getItem("cart_id"))) {
+      localStorage.removeItem("cart_id");
+    }
     window.location.reload();
   }
 
-  function refresh_func(){
-    const my_token = localStorage.getItem('token');
-    const my_refresh = localStorage.getItem('refresh');
-    setLoader(my_token || my_cart1);
-    if(my_token && my_refresh){
-      console.log(check_session(my_token));
-      if(!check_session(my_refresh)){user_cart_out();}
-      else if(check_session(my_token)){user_cart1(my_cart1,my_token);}
-      else{user_cart2(my_cart1);}
-    }
-    else if(my_cart1){guest_cart(my_cart1)}
-  }
+  function refresh_func() {setRefresh(refresh_add+1)}
 
   useEffect(() => {
-    refresh_func();
-  }, []);
- 
+    function get_token_cart(my_cart) {
+      axios
+        .post(api_url + "token/refresh/", {
+          refresh: localStorage.getItem("refresh"),
+        })
+        .then((res) => {
+          const new_token = res.data.access;
+          localStorage.setItem("token", new_token);
+          get_cart(my_cart, new_token);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function get_cart(my_cart,req_token) {
+      setLoader(true);
+      if(req_token){
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${req_token}`;
+      }
+      axios
+        .get(api_url + "cart/" + parseInt(my_cart) + "/")
+        .then((res) => {
+          setMyCart(res.data);
+          setLoader(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    const my_token = localStorage.getItem("token");
+    const my_refresh = localStorage.getItem("refresh");
+    const if_cart = localStorage.getItem("cart_id");
+    if (my_token && my_refresh) {
+      // const cart_of_user = jwtDecode(my_token).cart_id;
+      if (!check_session(my_refresh)) {
+        logout();
+      } else if (check_session(my_token)) {
+        get_cart(if_cart, my_token);
+      } else {
+        get_token_cart(if_cart);
+      }
+    } else if (if_cart) {
+      get_cart(if_cart, my_token);
+    }
+  }, [refresh_add]);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home logout={logout} nav_loader={loader} cart_id={my_cart1} productsList={productsList} setProductsList={setProductsList} categoryList={categoryList} setCategoryList={setCategoryList} set_cart={setMyCart} api_url={api_url} cartList={cartList} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              logout={logout}
+              nav_loader={loader}
+              cart_id={my_cart_id}
+              productsList={productsList}
+              setProductsList={setProductsList}
+              categoryList={categoryList}
+              setCategoryList={setCategoryList}
+              set_cart={setMyCart}
+              api_url={api_url}
+              cartList={cartList}
+            />
+          }
+        />
         <Route path="/edit" element={<Edit api_url={api_url} />} />
-        <Route path="/login" element={<LoginRegister refi={refresh_func} api_url={api_url}/>} />
-        <Route path="/mycart" element={<Cart data_loader={loader} api_url={api_url} set_cart={setMyCart} cartList={cartList} total_to_pay={totalPay} cart_data={cartData} />} />
+        <Route
+          path="/login"
+          element={<LoginRegister refi={refresh_func} api_url={api_url} />}
+        />
+        <Route
+          path="/mycart"
+          element={
+            <Cart
+              data_loader={loader}
+              api_url={api_url}
+              set_cart={setMyCart}
+              cartList={cartList}
+              total_to_pay={totalPay}
+              cart_data={cartData}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

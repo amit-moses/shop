@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
+import { jwtDecode } from "jwt-decode";
 
 function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loader, logout}) {
-  const my_username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
     function get_cat_name(){
         if(myfilter){
             const query = categories.filter((cat) => parseInt(myfilter) === parseInt(cat.id))
@@ -62,7 +63,7 @@ function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loade
                 </ul>
               </li>
             </ul>
-            {my_username? <h5 style={{marginRight: "15px"}}>hello, {my_username}</h5>:""}
+            {token? <h5 style={{marginRight: "15px"}}>hello, {jwtDecode(token).username}</h5>:""}
             <div className="d-flex" style={{marginLeft:"9px"}}>
                 
                 <Link to="/mycart" className="btn btn-outline-dark">
@@ -78,7 +79,7 @@ function Navbar({cartitems, categories, filter_func, myfilter, search, nav_loade
                 </Link>
             </div>
             <div className="d-flex" style={{marginLeft:"9px"}}>
-              {localStorage.getItem('username') ?
+              {token ?
                 <button onClick={() => logout()} className="btn btn-outline-dark">
                   <i className="bi-cart-fill me-1"></i>
                   Log-out

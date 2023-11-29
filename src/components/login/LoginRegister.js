@@ -29,7 +29,6 @@ function LoginRegister({ api_url, refi }) {
         setErr(false);
         localStorage.setItem("token", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
-        localStorage.setItem("username", my_username);
         refi();
         setLoader(false);
         navigate_to("/");

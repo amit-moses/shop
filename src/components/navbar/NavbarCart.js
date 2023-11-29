@@ -1,7 +1,8 @@
+import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom"
 
 function NavbarCart() {
-const my_username = localStorage.getItem('username');
+const token = localStorage.getItem('token');
 return (
   <>
   <nav className="navbar navbar-expand-lg "></nav>
@@ -27,7 +28,7 @@ return (
         <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
               
         </ul>
-        {my_username? <h5 style={{marginRight: "20px"}}>hello, {my_username}</h5>:""}
+        {token? <h5 style={{marginRight: "15px"}}>hello, {jwtDecode(token).username}</h5>:""}
           <div className="d-flex">
             <Link to="/" className="btn btn-outline-dark">
               back
