@@ -15,7 +15,7 @@ function App() {
   const [productsList, setProductsList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [my_cart_id, setCartId] = useState(localStorage.getItem('cart_id'));
+  const [my_cart_id, setCartId] = useState(0);
   const [refresh_add, setRefresh] = useState(0);
   const api_url = "http://127.0.0.1:8000/";
   // const api_url = "https://shop-rest.onrender.com/"
@@ -23,7 +23,7 @@ function App() {
   function setMyCart(data) {
     setCartList(data.cartitem);
     setTotalPay(data.total);
-    setCartId(data.id)
+    setCartId(data.id);
     setCartData((({ cartitem, ...rest }) => rest)(data));
     if (!data.buyer) {
       localStorage.setItem("cart_id", data.id);
@@ -40,13 +40,42 @@ function App() {
     const my_token = localStorage.getItem("token");
     localStorage.removeItem("token");
     localStorage.removeItem("refresh");
-    if (jwtDecode(my_token).cart_id === parseInt(localStorage.getItem("cart_id"))) {
+    const cart_id_user = parseInt(jwtDecode(my_token).cart_id);
+    if (!cart_id_user || cart_id_user === parseInt(localStorage.getItem("cart_id"))) {
       localStorage.removeItem("cart_id");
     }
     window.location.reload();
   }
 
-  function refresh_func() {setRefresh(refresh_add+1)}
+  function refresh_func() {
+    setRefresh(refresh_add + 1);
+  }
+
+  useEffect(() => {
+    function updateProducts(api) {
+      axios
+        .get(api + "products/")
+        .then((res) => {
+          setProductsList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    function updateCategorey(api) {
+      axios
+        .get(api + "category/")
+        .then((res) => {
+          setCategoryList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    updateCategorey(api_url);
+    updateProducts(api_url);
+  }, []);
 
   useEffect(() => {
     function get_token_cart(my_cart) {
@@ -64,15 +93,15 @@ function App() {
         });
     }
 
-    function get_cart(my_cart,req_token) {
+    function get_cart(my_cart, req_token) {
       setLoader(true);
-      if(req_token){
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${req_token}`;
+      const api_to = req_token ? "usercart" : "cart/" + (my_cart ? my_cart : 0);
+      if (req_token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${req_token}`;
       }
+      console.log(api_url + api_to + "/");
       axios
-        .get(api_url + "cart/" + parseInt(my_cart) + "/")
+        .get(api_url + api_to + "/", { params: { cart_id: my_cart } })
         .then((res) => {
           setMyCart(res.data);
           setLoader(false);
@@ -83,18 +112,18 @@ function App() {
     }
     const my_token = localStorage.getItem("token");
     const my_refresh = localStorage.getItem("refresh");
-    const if_cart = localStorage.getItem("cart_id");
+    const my_cart_id = localStorage.getItem("cart_id");
     if (my_token && my_refresh) {
       // const cart_of_user = jwtDecode(my_token).cart_id;
       if (!check_session(my_refresh)) {
         logout();
       } else if (check_session(my_token)) {
-        get_cart(if_cart, my_token);
+        get_cart(my_cart_id, my_token);
       } else {
-        get_token_cart(if_cart);
+        get_token_cart(my_cart_id);
       }
-    } else if (if_cart) {
-      get_cart(if_cart, my_token);
+    } else if (my_cart_id) {
+      get_cart(my_cart_id, my_token);
     }
   }, [refresh_add]);
 
@@ -109,9 +138,7 @@ function App() {
               nav_loader={loader}
               cart_id={my_cart_id}
               productsList={productsList}
-              setProductsList={setProductsList}
               categoryList={categoryList}
-              setCategoryList={setCategoryList}
               set_cart={setMyCart}
               api_url={api_url}
               cartList={cartList}
@@ -121,7 +148,13 @@ function App() {
         <Route path="/edit" element={<Edit api_url={api_url} />} />
         <Route
           path="/login"
-          element={<LoginRegister refi={refresh_func} api_url={api_url} />}
+          element={
+            <LoginRegister
+              setCartId={setCartId}
+              refi={refresh_func}
+              api_url={api_url}
+            />
+          }
         />
         <Route
           path="/mycart"

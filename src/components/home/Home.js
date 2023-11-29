@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import ProductCard from "./ProductCard";
 import Navbar from "../navbar/Navbar";
 import Loader from "../Loader";
 
-function Home({cartList, api_url, set_cart, productsList, setProductsList, categoryList, setCategoryList, cart_id, nav_loader, logout}) {
+function Home({cartList, api_url, set_cart, productsList, categoryList, cart_id, nav_loader, logout}) {
   const [filter, setFilter] = useState(0);
   const [searchKey, setSearchKey] = useState("");
   
@@ -13,25 +12,6 @@ function Home({cartList, api_url, set_cart, productsList, setProductsList, categ
     if(searchKey) return to_return && myproduct.name.toLowerCase().includes(searchKey.toLowerCase());
     else return to_return;
   }
-  function updateProducts(api){
-    axios.get(api + "products/").then((res) => {
-      setProductsList(res.data);
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-  function updateCategorey(api){
-    axios.get(api + "category/").then((res) => {
-      setCategoryList(res.data);
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-  useEffect(() => {
-    const api = "https://shop-rest.onrender.com/"
-    updateCategorey(api);
-    updateProducts(api);
-  }, []);
   
   function quantity_in_cart(id_pro){
     const query = cartList.filter((item)=>parseInt(item.product.id) === parseInt(id_pro));

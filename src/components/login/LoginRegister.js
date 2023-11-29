@@ -4,8 +4,9 @@ import Register from "./Register";
 import Login from "./Login";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-function LoginRegister({ api_url, refi }) {
+function LoginRegister({ api_url, refi, setCartId }) {
   const [isLogin, setLogin] = useState(true);
   const [errMsg, setErr] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -29,6 +30,7 @@ function LoginRegister({ api_url, refi }) {
         setErr(false);
         localStorage.setItem("token", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
+        setCartId(jwtDecode(res.data.access).cart_id);
         refi();
         setLoader(false);
         navigate_to("/");
