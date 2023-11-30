@@ -14,16 +14,14 @@ function Total({set_cart, api_url, cart_data}) {
     setLoader(Boolean(promo));
     axios.post(api_url + "updatepromo/" + cart_data.id + "/", {promocode: promo})
     .then((res) => {
+      set_cart(res.data);
       if(promo !== -1 ){
-        if(! res.data.promocode){setError(promo);}
-        else if(cart_data.promocode){
-          if(cart_data.promocode.code !== promo ){setError(promo);}
+        if(res.data.promocode){
+          if(res.data.promocode.code !== promo ){setError(promo);}
         } 
-      }
-      if(promo !== -1){
+        else {setError(promo);}
         setPromo("");
       }
-      set_cart(res.data);
       setLoader(false);
     }).catch(error => {
       setLoader(false);
