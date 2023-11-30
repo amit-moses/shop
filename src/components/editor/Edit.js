@@ -21,12 +21,8 @@ function Edit({
 
   useEffect(() => {
     try {
-      if (!token || !jwtDecode(token).is_staff) {
-        navigate_to("/");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      if (!token || !jwtDecode(token).is_staff) {navigate_to("/");}
+    } catch (error) {console.error(error);}
   }, [token, navigate_to]);
 
   function ref_promo() {
