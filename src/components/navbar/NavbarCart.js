@@ -3,7 +3,15 @@ import { Link } from "react-router-dom";
 
 function NavbarCart() {
   const token = localStorage.getItem("token");
-  const staff = token ? jwtDecode(token).is_staff : false;
+  function check_session(token) {
+    if (token) {
+      const expirationTime = jwtDecode(token).exp * 1000;
+      const currentTime = Date.now();
+      return currentTime < expirationTime;
+    }
+    return false;
+  }
+  const staff = check_session(token) ? jwtDecode(token).is_staff : false;
   return (
     <>
       <nav className="navbar navbar-expand-lg "></nav>
@@ -27,7 +35,7 @@ function NavbarCart() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4"></ul>
-            {token && (
+            {check_session(token) && (
               <h5 style={{ marginRight: "15px" }}>
                 hello, {jwtDecode(token).username}
               </h5>
