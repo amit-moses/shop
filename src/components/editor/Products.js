@@ -3,7 +3,13 @@ import Product from "./Product";
 import axios from "axios";
 import Loader from "../Loader";
 
-function Products({api_url, productsList, categoryList, setProductsList, refresh}) {
+function Products({
+  api_url,
+  productsList,
+  categoryList,
+  setProductsList,
+  refresh,
+}) {
   const [pr_name, setProductName] = useState("");
   const [pr_price, setProductPrice] = useState(0);
   const [pr_stock, setProductStock] = useState(0);
@@ -11,16 +17,21 @@ function Products({api_url, productsList, categoryList, setProductsList, refresh
   const [pr_image, setProductImage] = useState("");
   const [filter, setFilter] = useState(0);
   const [load_add, setLoad] = useState(false);
-  const first = categoryList[0]
-useEffect(()=>{
-  if(first){
-    setProductCat(first.id);
+  const [search, setSearchKey] = useState("");
+
+  const first = categoryList[0];
+  useEffect(() => {
+    if (first) {
+      setProductCat(first.id);
+    }
+  }, [first]);
+
+  function help_filter(myproduct){
+    let to_return = filter? parseInt(myproduct.category) === parseInt(filter): true;
+    if(search) return to_return && myproduct.name.toLowerCase().includes(search.toLowerCase());
+    else return to_return;
   }
-},[first]);
-  function filter_cat(){
-    if(parseInt(filter)) return productsList.filter((item)=>parseInt(item.category) === parseInt(filter));
-    else return productsList;
-  }
+
 
   function addProduct() {
     setLoad(true);
@@ -29,7 +40,7 @@ useEffect(()=>{
       price: pr_price,
       stock: pr_stock,
       category: pr_cat,
-      image: pr_image
+      image: pr_image,
     };
     axios
       .post(api_url + "products/", product_to_add)
@@ -38,10 +49,11 @@ useEffect(()=>{
         setProductPrice(0);
         setProductCat(1);
         setProductStock(0);
-        setProductImage("")
+        setProductImage("");
         refresh();
         setLoad(false);
-      }).catch((res)=>{
+      })
+      .catch((res) => {
         console.log(res);
         setLoad(false);
       });
@@ -53,27 +65,31 @@ useEffect(()=>{
 
   return (
     <>
-    <div className="container">
-    <select
-            onChange={(e) => setFilter(e.target.value)}
+      <div className="row col-md-12">
+        <div className="col-md-8">
+          <input
+            id="inp7"
+            type="text"
+            placeholder="search"
+            className="form-control mb-3"
+            onChange={(e) => setSearchKey(e.target.value)}
+          ></input>
+        </div>
+        <div className="col-md-4">
+          <select
+            onChange={(e) => setFilter(parseInt(e.target.value))}
             aria-label="Default select example"
-            className="form-select col-md-12 mb-3"
+            className="form-select mb-3"
           >
-            <option
-                value="0"
-              >
-                all
-              </option>
+            <option value="0">all</option>
             {categoryList.map((item, index) => (
-              <option
-                value={item.id}
-                key={index}
-              >
+              <option value={item.id} key={index}>
                 {item.name}
               </option>
             ))}
           </select>
-    </div>
+        </div>
+      </div>
       <div className="col-md-4">
         <form onSubmit={handleSubmit}>
           <div className="form-floating mb-3">
@@ -119,13 +135,10 @@ useEffect(()=>{
               onChange={(e) => setProductCat(e.target.value)}
             >
               {categoryList.map((item, index) => (
-              <option
-                value={item.id}
-                key={index}
-              >
-                {item.name}
-              </option>
-            ))}
+                <option value={item.id} key={index}>
+                  {item.name}
+                </option>
+              ))}
             </select>
             <label htmlFor="inp4">category</label>
           </div>
@@ -147,10 +160,10 @@ useEffect(()=>{
             value={"add"}
             type="submit"
           ></input>
-          {load_add && <Loader loaderSize={8} inCart={""} isLoad={true}/>}
+          {load_add && <Loader loaderSize={8} inCart={""} isLoad={true} />}
         </form>
       </div>
-          
+
       <div className="col-md-8">
         <table className="table table-striped" border="1">
           <thead className="thead-dark">
@@ -164,8 +177,17 @@ useEffect(()=>{
             </tr>
           </thead>
           <tbody id="tablebody">
-            {filter_cat().map((product, index) => (
-              <Product refi={refresh} productList={productsList} setProductsList={setProductsList} api_url={api_url} key={index} category={categoryList} product={product} />
+            {productsList.map((product, index) => (
+              <Product
+                productList={productsList}
+                setProductsList={setProductsList}
+                visable={help_filter(product)}
+                refi={refresh}
+                api_url={api_url}
+                key={index}
+                category={categoryList}
+                product={product}
+              />
             ))}
           </tbody>
         </table>

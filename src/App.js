@@ -156,8 +156,7 @@ function App() {
               productsList={productsList}
               categoryList={categoryList}
               refi={refresh_func_item} 
-              setCategoryList={setCategoryList}
-              setProductsList={setProductsList}/>} />
+              setCategoryList={setCategoryList}/>} />
         <Route
           path="/login"
           element={

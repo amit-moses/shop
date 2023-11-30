@@ -2,14 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Loader from "../Loader";
 
-function Product({
-  product,
-  refi,
-  category,
-  api_url,
-  setProductsList,
-  productList,
-}) {
+function Product({ product, refi, category, api_url, visable, setProductsList, productList }) {
   const [editor, setEditor] = useState(false);
   const [ed_name, setEditorName] = useState(product.name);
   const [ed_price, setEditorPrice] = useState(product.price);
@@ -35,6 +28,7 @@ function Product({
           const mok = !editor;
           setEditor(mok);
           setploader(false);
+          refi();
         });
     } else {
       console.log(api_url + "product/" + product.id + "/");
@@ -43,10 +37,9 @@ function Product({
     }
   }
   function category_name_by_id(id) {
-    for (const element of category) {
-      if (parseInt(element.id) === parseInt(id)) return element.name;
-    }
-    return "err";
+    const data = category.find(item => item.id === id);
+    if(data){return data.name;}
+    else {return "";}
   }
   function del_func() {
     const last_id = category.id;
@@ -60,96 +53,95 @@ function Product({
   }
   return (
     <>
-      <tr>
-        <td>
-          <input
-            type="text"
-            onChange={(e) => setEditorName(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_name}
-          ></input>
-        </td>
-        <td>
-          <input
-            type="number"
-            step="0.01"
-            onChange={(e) => setEditorPrice(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_price}
-          ></input>{" "}
-        </td>
-        <td>
-          <input
-            type="number"
-            onChange={(e) => setEditorStock(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_stock}
-          ></input>
-        </td>
-        <td>
-          {editor ? (
-            <select
-              value={product.category}
-              onChange={(e) => setEditorCat(e.target.value)}
-              aria-label="Default select example"
-              className="form-select"
-            >
-              {category.map((item, index) => (
-                <option
-                  value={item.id}
-                  key={index}
-                >
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <label className="form-control-plaintext">
-              {category_name_by_id(product.category)}
-            </label>
-          )}
-        </td>
-        <td>
-          <input
-            type="text"
-            onChange={(e) => setEditorUrl(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_url}
-          ></input>
-        </td>
-        {pr_loader ? (
+      {visable && (
+        <tr>
           <td>
-            <Loader loaderSize={8} inCart={""} isLoad={true} />
+            <input
+              type="text"
+              onChange={(e) => setEditorName(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_name}
+            ></input>
           </td>
-        ) : (
-          <>
-            <td>
-              <button
-                disabled={pr_loader}
-                onClick={() => setSaveOrEditor()}
-                type="button"
-                className="btn btn-primary"
+          <td>
+            <input
+              type="number"
+              step="0.01"
+              onChange={(e) => setEditorPrice(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_price}
+            ></input>{" "}
+          </td>
+          <td>
+            <input
+              type="number"
+              onChange={(e) => setEditorStock(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_stock}
+            ></input>
+          </td>
+          <td>
+            {editor ? (
+              <select
+                value={ed_cat}
+                onChange={(e) => setEditorCat(e.target.value)}
+                aria-label="Default select example"
+                className="form-select"
               >
-                {editor ? "Save" : "Edit"}
-              </button>
-            </td>
+                {category.map((item, index) => (
+                  <option value={item.id} key={index}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <label className="form-control-plaintext">
+                {category_name_by_id(product.category)}
+              </label>
+            )}
+          </td>
+          <td>
+            <input
+              type="text"
+              onChange={(e) => setEditorUrl(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_url}
+            ></input>
+          </td>
+          {pr_loader ? (
             <td>
-              <button
-                disabled={pr_loader}
-                onClick={del_func}
-                type="button"
-                className="btn btn-danger"
-              >
-                Delete
-              </button>
+              <Loader loaderSize={8} inCart={""} isLoad={true} />
             </td>
-          </>
-        )}
-      </tr>
+          ) : (
+            <>
+              <td>
+                <button
+                  disabled={pr_loader}
+                  onClick={() => setSaveOrEditor()}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  {editor ? "Save" : "Edit"}
+                </button>
+              </td>
+              <td>
+                <button
+                  disabled={pr_loader}
+                  onClick={del_func}
+                  type="button"
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </>
+          )}
+        </tr>
+      )}
     </>
   );
 }

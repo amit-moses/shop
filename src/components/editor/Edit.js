@@ -3,7 +3,7 @@ import Products from "./Products";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Promocodes from "./Promocodes";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 function Edit({
@@ -12,7 +12,6 @@ function Edit({
   categoryList,
   refi,
   setCategoryList,
-  setProductsList,
 }) {
   const [promoList, setPromoList] = useState([]);
   const [refresh_promo, setRefresh_promo] = useState(0);
@@ -52,10 +51,10 @@ function Edit({
       <section className="py-2 container">
         <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li className="nav-item mt-1" style={{ marginRight: "10px" }}>
-            <Link className="navbar-brand" to="/">
+            <a className="navbar-brand" href="https://shop-react.onrender.com/">
               <img style={{ height: "30px" }} src="/logo192.png" alt="..." />
               React Shop
-            </Link>
+            </a>
           </li>
           <li className="nav-item" role="presentation">
             <button
@@ -112,7 +111,6 @@ function Edit({
                 refresh={refi}
                 productsList={productsList}
                 categoryList={categoryList}
-                setProductsList={setProductsList}
                 api_url={api_url}
               />
             </div>
