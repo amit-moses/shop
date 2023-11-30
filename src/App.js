@@ -154,6 +154,7 @@ function App() {
         />
         <Route path="/edit" element={<Edit api_url={api_url} 
               productsList={productsList}
+              setProductsList={setProductsList}
               categoryList={categoryList}
               refi={refresh_func_item} 
               setCategoryList={setCategoryList}/>} />

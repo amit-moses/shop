@@ -12,6 +12,7 @@ function Edit({
   categoryList,
   refi,
   setCategoryList,
+  setProductsList
 }) {
   const [promoList, setPromoList] = useState([]);
   const [refresh_promo, setRefresh_promo] = useState(0);
@@ -110,6 +111,7 @@ function Edit({
               <Products
                 refresh={refi}
                 productsList={productsList}
+                setProductsList={setProductsList}
                 categoryList={categoryList}
                 api_url={api_url}
               />
