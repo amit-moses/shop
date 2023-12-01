@@ -102,7 +102,6 @@ function App() {
       if (req_token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${req_token}`;
       }
-      console.log(api_url + api_to + "/");
       axios
         .get(api_url + api_to + "/", { params: { cart_id: my_cart } })
         .then((res) => {
@@ -120,7 +119,6 @@ function App() {
     const my_refresh = localStorage.getItem("refresh");
     const my_cart_id = localStorage.getItem("cart_id");
     if (my_token && my_refresh) {
-      // const cart_of_user = jwtDecode(my_token).cart_id;
       if (!check_session(my_refresh)) {
         logout();
       } else if (check_session(my_token)) {

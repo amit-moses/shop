@@ -29,10 +29,6 @@ function Edit({
     setRefresh_promo(refresh_promo + 1);
   }
   useEffect(() => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("token")}`;
-
     axios
       .get("https://shop-rest.onrender.com/promo/")
       .then((res) => {
