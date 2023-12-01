@@ -26,12 +26,16 @@ function Products({
     }
   }, [first]);
 
-  function help_filter(myproduct){
-    let to_return = filter? parseInt(myproduct.category) === parseInt(filter): true;
-    if(search) return to_return && myproduct.name.toLowerCase().includes(search.toLowerCase());
+  function help_filter(myproduct) {
+    let to_return = filter
+      ? parseInt(myproduct.category) === parseInt(filter)
+      : true;
+    if (search)
+      return (
+        to_return && myproduct.name.toLowerCase().includes(search.toLowerCase())
+      );
     else return to_return;
   }
-
 
   function addProduct() {
     setLoad(true);
@@ -70,7 +74,7 @@ function Products({
           <input
             id="inp7"
             type="text"
-            placeholder="search"
+            placeholder="search by product name"
             className="form-control mb-3"
             onChange={(e) => setSearchKey(e.target.value)}
           ></input>

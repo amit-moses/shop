@@ -18,7 +18,7 @@ function App() {
   const [my_cart_id, setCartId] = useState(0);
   const [refresh_add, setRefresh] = useState(0);
   const [refresh_items, setRefreshItems] = useState(0);
-  const api_url = "https://shop-rest.onrender.com/"
+  const api_url = "https://shop-react.onrender.com/";
 
   function setMyCart(data) {
     setCartList(data.cartitem);
@@ -41,7 +41,10 @@ function App() {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh");
     const cart_id_user = parseInt(jwtDecode(my_token).cart_id);
-    if (!cart_id_user || cart_id_user === parseInt(localStorage.getItem("cart_id"))) {
+    if (
+      !cart_id_user ||
+      cart_id_user === parseInt(localStorage.getItem("cart_id"))
+    ) {
       localStorage.removeItem("cart_id");
     }
     window.location.reload();
@@ -149,12 +152,19 @@ function App() {
             />
           }
         />
-        <Route path="/edit" element={<Edit api_url={api_url} 
+        <Route
+          path="/edit"
+          element={
+            <Edit
+              api_url={api_url}
               productsList={productsList}
               setProductsList={setProductsList}
               categoryList={categoryList}
-              refi={refresh_func_item} 
-              setCategoryList={setCategoryList}/>} />
+              refi={refresh_func_item}
+              setCategoryList={setCategoryList}
+            />
+          }
+        />
         <Route
           path="/login"
           element={

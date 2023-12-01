@@ -5,6 +5,7 @@ import axios from "axios";
 import Promocodes from "./Promocodes";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import ActiveCarts from "./ActiveCarts";
 
 function Edit({
   api_url,
@@ -12,32 +13,51 @@ function Edit({
   categoryList,
   refi,
   setCategoryList,
-  setProductsList
+  setProductsList,
 }) {
   const [promoList, setPromoList] = useState([]);
+  const [cart_list, setCarts] = useState([]);
   const [refresh_promo, setRefresh_promo] = useState(0);
+  const [load, setLoad] = useState(true);
   const token = localStorage.getItem("token");
   const navigate_to = useNavigate();
 
   useEffect(() => {
     try {
-      if (!token || !jwtDecode(token).is_staff) {navigate_to("/");}
-    } catch (error) {console.error(error);}
+      if (!token || !jwtDecode(token).is_staff) {
+        navigate_to("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }, [token, navigate_to]);
 
   function ref_promo() {
     setRefresh_promo(refresh_promo + 1);
   }
   useEffect(() => {
-    axios
-      .get("https://shop-rest.onrender.com/promo/")
-      .then((res) => {
-        setPromoList(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [refresh_promo]);
+    if (api_url && token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .get(api_url + "promo/")
+        .then((res) => {
+          setPromoList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      axios
+        .get(api_url + "carts/")
+        .then((res) => {
+          setCarts(res.data);
+          setLoad(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [refresh_promo, api_url, token]);
 
   return (
     <>
@@ -91,6 +111,20 @@ function Edit({
               Edit promocodes
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link"
+              id="pills-carts-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-carts"
+              type="button"
+              role="tab"
+              aria-controls="pills-carts"
+              aria-selected="false"
+            >
+              Active carts
+            </button>
+          </li>
         </ul>
         <div className="tab-content" id="pills-tabContent">
           <div
@@ -137,6 +171,17 @@ function Edit({
                 setPromoList={setPromoList}
                 refresh={ref_promo}
               />
+            </div>
+          </div>
+
+          <div
+            className="tab-pane fade"
+            id="pills-carts"
+            role="tabpanel"
+            aria-labelledby="pills-carts-tab"
+          >
+            <div className="row col-md-12">
+              <ActiveCarts load={load} carts_list={cart_list} />
             </div>
           </div>
         </div>
