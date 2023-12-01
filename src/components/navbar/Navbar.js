@@ -12,15 +12,16 @@ function Navbar({
   logout,
 }) {
   const token = localStorage.getItem("token");
+  const token_dec = token? jwtDecode(token): null;
   function check_session(token) {
     if (token) {
-      const expirationTime = jwtDecode(token).exp * 1000;
+      const expirationTime = token_dec.exp * 1000;
       const currentTime = Date.now();
       return currentTime < expirationTime;
     }
     return false;
   }
-  const staff = check_session(token) ? jwtDecode(token).is_staff : false;
+  const staff = check_session(token) ? token_dec.is_staff : false;
 
   function get_cat_name() {
     if (myfilter) {
@@ -99,7 +100,7 @@ function Navbar({
             </ul>
             {check_session(token) && (
               <h5 style={{ marginRight: "15px" }}>
-                hello, {jwtDecode(token).username}
+                hello, {token_dec.username}
               </h5>
             )}
             {staff && (
