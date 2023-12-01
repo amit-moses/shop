@@ -18,7 +18,7 @@ function App() {
   const [my_cart_id, setCartId] = useState(0);
   const [refresh_add, setRefresh] = useState(0);
   const [refresh_items, setRefreshItems] = useState(0);
-  const api_url = "https://shop-react.onrender.com/";
+  const api_url = "https://shop-rest.onrender.com/";
 
   function setMyCart(data) {
     setCartList(data.cartitem);
