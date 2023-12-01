@@ -23,6 +23,7 @@ function Promo({promo, api_url, promoList, setPromoList, refi}) {
           .then(function (response) {
             const mok = !editor;
             setEditor(mok);
+            refi();
             setcaloader(false);
           });
       } else {
