@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Loader from '../Loader';
 import { useState } from 'react';
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
   const [loader, setLoader] = useState(false);
@@ -51,9 +52,9 @@ function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
           <div className="text-center">
             {0 < in_cart? 
             <>
-            <button disabled={loader} style={{marginRight: "10px", visibility: in_cart < product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">+</button>
+            <button disabled={loader} style={{marginRight: "10px", visibility: in_cart < product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark rounded"><FaPlus/></button>
             <Loader isLoad={loader} inCart={in_cart < product.stock? in_cart: "last " + in_cart} loaderSize={8}/>
-            <button disabled={loader} style={{marginLeft: "10px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto">-</button>
+            <button disabled={loader} style={{marginLeft: "10px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark rounded"><FaMinus /></button>
             </>
             : 
             loader ? <Loader isLoad={true} inCart={''} loaderSize={8} />: 0 < product.stock? <button onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto">Add to cart</button>: <button disabled className="btn btn-outline-dark mt-auto">Out of stock</button>

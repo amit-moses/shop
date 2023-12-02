@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
 
 function NavbarCart() {
   const token = localStorage.getItem("token");
@@ -51,7 +52,7 @@ function NavbarCart() {
             )}
             <div className="d-flex">
               <Link to="/" className="btn btn-outline-dark">
-                back
+                <IoIosArrowBack/> back
               </Link>
             </div>
           </div>

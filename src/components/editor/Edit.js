@@ -6,6 +6,7 @@ import Promocodes from "./Promocodes";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import ActiveCarts from "./ActiveCarts";
+import Customers from "./Customers";
 
 function Edit({
   api_url,
@@ -17,6 +18,7 @@ function Edit({
 }) {
   const [promoList, setPromoList] = useState([]);
   const [cart_list, setCarts] = useState([]);
+  const [customers_list, setCustomers] = useState([]);
   const [refresh_promo, setRefresh_promo] = useState(0);
   const [load, setLoad] = useState(true);
   const token = localStorage.getItem("token");
@@ -52,6 +54,15 @@ function Edit({
         .then((res) => {
           setCarts(res.data);
           setLoad(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        axios
+        .get(api_url + "customers/")
+        .then((res) => {
+          setCustomers(res.data);
         })
         .catch((error) => {
           console.log(error);
@@ -125,6 +136,20 @@ function Edit({
               Active carts
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link"
+              id="pills-customers-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-customers"
+              type="button"
+              role="tab"
+              aria-controls="pills-customers"
+              aria-selected="false"
+            >
+              Customers
+            </button>
+          </li>
         </ul>
         <div className="tab-content" id="pills-tabContent">
           <div
@@ -184,6 +209,19 @@ function Edit({
               <ActiveCarts load={load} carts_list={cart_list} />
             </div>
           </div>
+
+          <div
+            className="tab-pane fade"
+            id="pills-customers"
+            role="tabpanel"
+            aria-labelledby="pills-customers-tab"
+          >
+            <div className="row col-md-12">
+              <Customers setCustomers={setCustomers} customers_list={customers_list} api_url={api_url}/>
+            </div>
+          </div>
+
+
         </div>
       </section>
     </>

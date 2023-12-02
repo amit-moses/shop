@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import Loader from "../Loader";
+import { MdDelete, MdModeEdit, MdSave } from "react-icons/md";
 
 function Product({ product, refi, category, api_url, visable, setProductsList, productList }) {
   const [editor, setEditor] = useState(false);
@@ -31,7 +32,6 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
           refi();
         });
     } else {
-      console.log(api_url + "product/" + product.id + "/");
       const mok = !editor;
       setEditor(mok);
     }
@@ -125,7 +125,7 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
                   type="button"
                   className="btn btn-primary"
                 >
-                  {editor ? "Save" : "Edit"}
+                  {editor ? <MdSave /> : <MdModeEdit/>}
                 </button>
               </td>
               <td>
@@ -135,7 +135,7 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
                   type="button"
                   className="btn btn-danger"
                 >
-                  Delete
+                  <MdDelete />
                 </button>
               </td>
             </>

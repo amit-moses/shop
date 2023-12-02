@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import Loader from "../Loader";
+import { MdDelete, MdModeEdit, MdSave } from "react-icons/md";
 
 function Category({ category, api_url, refi, categoryList, setCategoryList }) {
   const [editor, setEditor] = useState(false);
@@ -24,7 +25,6 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
           setcaloader(false);
         });
     } else {
-      console.log(api_url + "category/" + category.id + "/");
       const mok = !editor;
       setEditor(mok);
     }
@@ -74,7 +74,7 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
                 type="button"
                 className="btn btn-primary"
               >
-                {editor ? "Save" : "Edit"}
+                {editor ? <MdSave /> : <MdModeEdit/>}
               </button>
             </td>
             <td>
@@ -84,7 +84,8 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
                 type="button"
                 className="btn btn-danger"
               >
-                Delete
+                <MdDelete />
+
               </button>
             </td>
           </>

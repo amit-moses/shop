@@ -1,6 +1,7 @@
 import axios from "axios";
 import Loader from "../Loader";
 import { useState } from "react";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 function CartRow({cartitem, set_cart, api_url, cart_id}) {
   const [loader, setLoader] = useState(false);
@@ -41,9 +42,9 @@ function CartRow({cartitem, set_cart, api_url, cart_id}) {
         </div>
 
         <div className="col">
-        <button disabled={loader} style={{marginRight: "3px", visibility: cartitem.quantity < cartitem.product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark mt-auto text-center btn-m">+</button>
+        <button disabled={loader} style={{marginRight: "3px", visibility: cartitem.quantity < cartitem.product.stock? "visible": "hidden"}} onClick={() => update_cart(1)} className="btn btn-outline-dark rounded text-center btn-m"><FaPlus/></button>
         <Loader isLoad={loader} inCart={cartitem.quantity < cartitem.product.stock? cartitem.quantity: "last " + cartitem.quantity} loaderSize={7}/>
-        <button disabled={loader} style={{marginLeft: "3px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark mt-auto text-center btn-m">-</button>
+        <button disabled={loader} style={{marginLeft: "3px"}} onClick={() => update_cart(-1)} className="btn btn-outline-dark rounded text-center btn-m"><FaMinus/></button>
         </div>
 
         <div className="col">

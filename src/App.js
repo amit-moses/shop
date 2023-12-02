@@ -19,6 +19,8 @@ function App() {
   const [refresh_add, setRefresh] = useState(0);
   const [refresh_items, setRefreshItems] = useState(0);
   const api_url = "https://shop-rest.onrender.com/";
+  // const api_url = "http://127.0.0.1:8000/";
+  
 
   function setMyCart(data) {
     setCartList(data.cartitem);

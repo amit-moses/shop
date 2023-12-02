@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import { jwtDecode } from "jwt-decode";
+import { FaRegUser } from "react-icons/fa";
 
 function Navbar({
   cartitems,
@@ -116,7 +117,6 @@ function Navbar({
                   <Loader inCart={""} isLoad={true} loaderSize={8} />
                 ) : (
                   <>
-                    <i className="bi-cart-fill me-1"></i>
                     Cart
                     <span className="badge bg-dark text-white ms-1 rounded-pill">
                       {cartitems.length}
@@ -137,7 +137,7 @@ function Navbar({
               ) : (
                 <Link to="/login" className="btn btn-outline-dark">
                   <i className="bi-cart-fill me-1"></i>
-                  Login
+                  <FaRegUser/> Login
                 </Link>
               )}
             </div>

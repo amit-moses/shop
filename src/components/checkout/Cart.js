@@ -23,7 +23,7 @@ function Cart({ cartList, set_cart, api_url, cart_data, data_loader }) {
       <NavbarCart />
       <div className="mycart">
         <div className="">
-          <div className="row">
+          <div className="row mt-3">
             <div className="col-md-9 cart">
               <div className="title">
                 <div className="row">
