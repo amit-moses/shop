@@ -2,7 +2,7 @@ import { useState } from "react";
 import Loader from "../Loader";
 import ActiveCart from "./ActiveCart";
 
-function ActiveCarts({ carts_list, load }) {
+function ActiveCarts({ carts_list, load, api_url }) {
   const [filter, setFilter] = useState(0);
   const [search, setSearchKey] = useState("");
 
@@ -74,6 +74,7 @@ function ActiveCarts({ carts_list, load }) {
         <tbody id="tablebody">
           {carts_list.map((mycart, index) => (
             <ActiveCart
+            api_url={api_url}
               cart={mycart}
               key={index}
               visable={help_filter(mycart)}

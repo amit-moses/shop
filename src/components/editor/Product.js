@@ -3,32 +3,54 @@ import { useState } from "react";
 import Loader from "../Loader";
 import { MdDelete, MdModeEdit, MdSave } from "react-icons/md";
 
-function Product({ product, refi, category, api_url, visable, setProductsList, productList }) {
+function Product({
+  product,
+  refi,
+  category,
+  api_url,
+  visable,
+  setProductsList,
+  productList,
+}) {
   const [editor, setEditor] = useState(false);
   const [ed_name, setEditorName] = useState(product.name);
   const [ed_price, setEditorPrice] = useState(product.price);
   const [ed_cat, setEditorCat] = useState(product.category);
   const [ed_stock, setEditorStock] = useState(product.stock);
-  const [ed_url, setEditorUrl] = useState(product.image);
+  const [ed_image_file, setImage] = useState(null);
   const [pr_loader, setploader] = useState(false);
 
   function setSaveOrEditor() {
     if (editor) {
-      const product_to_update = {
-        id: product.id,
-        name: ed_name,
-        price: ed_price,
-        stock: ed_stock,
-        category: ed_cat,
-        image: ed_url,
-      };
+      const product_to_update = ed_image_file
+        ? {
+            id: product.id,
+            name: ed_name,
+            price: ed_price,
+            stock: ed_stock,
+            category: ed_cat,
+            image: ed_image_file,
+          }
+        : {
+            id: product.id,
+            name: ed_name,
+            price: ed_price,
+            stock: ed_stock,
+            category: ed_cat,
+          };
+      console.log(product_to_update);
       setploader(true);
       axios
-        .put(api_url + "product/" + product.id + "/", product_to_update)
+        .put(api_url + "/product/" + product.id + "/", product_to_update, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then(function (response) {
           const mok = !editor;
           setEditor(mok);
           setploader(false);
+          setImage(null);
           refi();
         });
     } else {
@@ -37,14 +59,17 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
     }
   }
   function category_name_by_id(id) {
-    const data = category.find(item => item.id === id);
-    if(data){return data.name;}
-    else {return "";}
+    const data = category.find((item) => item.id === id);
+    if (data) {
+      return data.name;
+    } else {
+      return "";
+    }
   }
   function del_func() {
     const last_id = category.id;
     setploader(true);
-    axios.delete(api_url + "product/" + product.id + "/").then((res) => {
+    axios.delete(api_url + "/product/" + product.id + "/").then((res) => {
       const deleted_arr = productList.filter((item) => item.id !== last_id);
       setProductsList(deleted_arr);
       refi();
@@ -104,13 +129,22 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
             )}
           </td>
           <td>
-            <input
-              type="text"
-              onChange={(e) => setEditorUrl(e.target.value)}
-              disabled={editor ? false : true}
-              className={editor ? "form-control" : "form-control-plaintext"}
-              value={ed_url}
-            ></input>
+            {editor ? (
+              <input
+                multiple={false}
+                accept="image/*"
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+                className="form-control"
+              ></input>
+            ) : (
+              <img
+                style={{ height: "35px" }}
+                alt="..."
+                className="img-fluid"
+                src={api_url + "/static" + product.image}
+              />
+            )}
           </td>
           {pr_loader ? (
             <td>
@@ -125,7 +159,7 @@ function Product({ product, refi, category, api_url, visable, setProductsList, p
                   type="button"
                   className="btn btn-primary"
                 >
-                  {editor ? <MdSave /> : <MdModeEdit/>}
+                  {editor ? <MdSave /> : <MdModeEdit />}
                 </button>
               </td>
               <td>

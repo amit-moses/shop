@@ -20,7 +20,7 @@ function Promo({promo, api_url, promoList, setPromoList, refi}) {
         };
         setcaloader(true);
         axios
-          .put(api_url + "promo/" + promo.id + "/", promo_to_update)
+          .put(api_url + "/promo/" + promo.id + "/", promo_to_update)
           .then(function (response) {
             const mok = !editor;
             setEditor(mok);
@@ -36,7 +36,7 @@ function Promo({promo, api_url, promoList, setPromoList, refi}) {
     function del_func() {
       const last_id = promo.id;
       setcaloader(true);
-      axios.delete(api_url + "promo/" + promo.id + "/").then((res) => {
+      axios.delete(api_url + "/promo/" + promo.id + "/").then((res) => {
         const deleted_arr = promoList.filter((item) => item.id !== last_id);
         setPromoList(deleted_arr);
         refi();

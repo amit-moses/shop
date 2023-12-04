@@ -12,7 +12,7 @@ function Total({set_cart, api_url, cart_data}) {
   function update_promo(promo){
     setError();
     setLoader(Boolean(promo));
-    axios.post(api_url + "updatepromo/" + cart_data.id + "/", {promocode: promo})
+    axios.post(api_url + "/updatepromo/" + cart_data.id + "/", {promocode: promo})
     .then((res) => {
       set_cart(res.data);
       if(promo !== -1 ){

@@ -9,7 +9,7 @@ function Cart({ cartList, set_cart, api_url, cart_data, data_loader }) {
   const [loader, setLoader] = useState(false);
   function clear_cart(){
     setLoader(true);
-    axios.delete(api_url + "cart/" + cart_data.id + "/").then((res) => {
+    axios.delete(api_url + "/cart/" + cart_data.id + "/").then((res) => {
       setLoader(false);
       set_cart(res.data);
       window.history.back();
@@ -52,7 +52,7 @@ function Cart({ cartList, set_cart, api_url, cart_data, data_loader }) {
                 />
               ))}
             </div>
-            {cartList.length && <Total price={cart_data.total} api_url={api_url} set_cart={set_cart} cart_data={cart_data} />}
+            {Boolean(cartList.length) && <Total price={cart_data.total} api_url={api_url} set_cart={set_cart} cart_data={cart_data} />}
           </div>
         </div>
       </div>

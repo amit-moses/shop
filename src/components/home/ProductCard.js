@@ -15,7 +15,7 @@ function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
     in_cart += to_change;
     setLoader(true);
     axios
-      .put(api_url + "cart/"+urlm+"/", product_to_add)
+      .put(api_url + "/cart/"+urlm+"/", product_to_add)
       .then((res) => {
         if(!cart_id && !localStorage.getItem('token')){localStorage.setItem("cart_id", res.data.id);}
         set_cart(res.data)
@@ -37,7 +37,7 @@ function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
       <div className="card h-100">
         {/* <!-- Product image--> */}
         <div style={{position: "relative"}}>
-          <img style={boxstyle} className="card-img-top" src={product.image} alt="..." />
+          <img style={boxstyle} className="card-img-top" src={api_url +'/static'+ product.image} alt="..." />
         </div>
         {/* <!-- Product details--> */}
         <div className="card-body p-4">

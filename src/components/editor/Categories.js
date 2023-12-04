@@ -15,7 +15,7 @@ function Categories({api_url, categoryList, refresh, setCategoryList}) {
         description: ca_des
       };
       axios
-        .post(api_url + "category/", category_to_add)
+        .post(api_url + "/category/", category_to_add)
         .then((res) => {
           console.log(res.data);
           refresh();

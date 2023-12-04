@@ -18,7 +18,7 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
       };
       setcaloader(true);
       axios
-        .put(api_url + "category/" + category.id + "/", category_to_update)
+        .put(api_url + "/category/" + category.id + "/", category_to_update)
         .then(function (response) {
           const mok = !editor;
           setEditor(mok);
@@ -33,7 +33,7 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
   function del_func() {
     const last_id = category.id;
     setcaloader(true);
-    axios.delete(api_url + "category/" + category.id + "/").then((res) => {
+    axios.delete(api_url + "/category/" + category.id + "/").then((res) => {
       const deleted_arr = categoryList.filter((item) => item.id !== last_id);
       setCategoryList(deleted_arr);
       refi();

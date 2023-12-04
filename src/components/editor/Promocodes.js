@@ -16,7 +16,7 @@ function Promocodes({api_url, promoList, setPromoList, refresh}) {
         discount: parseInt(p_dis)
       };
       axios
-        .post(api_url + "promo/", promo_to_add)
+        .post(api_url + "/promo/", promo_to_add)
         .then((res) => {
           console.log(res.data);
           refresh();

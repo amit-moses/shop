@@ -18,8 +18,8 @@ function App() {
   const [my_cart_id, setCartId] = useState(0);
   const [refresh_add, setRefresh] = useState(0);
   const [refresh_items, setRefreshItems] = useState(0);
-  const api_url = "https://shop-rest.onrender.com/";
-  // const api_url = "http://127.0.0.1:8000/";
+  // const api_url = "https://shop-rest.onrender.com";
+  const api_url = "http://127.0.0.1:8000";
   
 
   function setMyCart(data) {
@@ -62,7 +62,7 @@ function App() {
   useEffect(() => {
     function updateProducts(api) {
       axios
-        .get(api + "products/")
+        .get(api + "/products/")
         .then((res) => {
           setProductsList(res.data);
         })
@@ -72,7 +72,7 @@ function App() {
     }
     function updateCategorey(api) {
       axios
-        .get(api + "category/")
+        .get(api + "/category/")
         .then((res) => {
           setCategoryList(res.data);
         })
@@ -88,7 +88,7 @@ function App() {
   useEffect(() => {
     function get_token_cart(my_cart) {
       axios
-        .post(api_url + "token/refresh/", {
+        .post(api_url + "/token/refresh/", {
           refresh: localStorage.getItem("refresh"),
         })
         .then((res) => {
@@ -103,7 +103,7 @@ function App() {
 
     function get_cart(my_cart, req_token) {
       setLoader(true);
-      const api_to = req_token ? "usercart" : "cart/" + (my_cart ? my_cart : 0);
+      const api_to = req_token ? "/usercart" : "/cart/" + (my_cart ? my_cart : 0);
       if (req_token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${req_token}`;
       }

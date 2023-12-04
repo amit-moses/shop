@@ -3,7 +3,7 @@ import { useState } from "react";
 import ActiveCartRow from "./ActiveCartRow";
 import { MdRemoveShoppingCart, MdShoppingCart } from "react-icons/md";
 
-function ActiveCart({ cart, visable }) {
+function ActiveCart({ cart, visable, api_url }) {
   const [more, setMore] = useState(false);
 
   return (
@@ -36,7 +36,7 @@ function ActiveCart({ cart, visable }) {
 
           {more &&
             cart.cartitem.map((item, index) => (
-              <ActiveCartRow cartitem={item} />
+              <ActiveCartRow key={index} api_url={api_url} cartitem={item} />
             ))}
         </>
       )}

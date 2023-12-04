@@ -10,7 +10,7 @@ function SelectedUser({ user_list, act_num, setAct, api_url, refi, selector, sel
 
   function del_users(){
     setLoad(true);
-    axios.put(api_url + "customers/", {deluser:user_list}).then((res) => {
+    axios.put(api_url + "/customers/", {deluser:user_list}).then((res) => {
         setAct(false);
         setLoad(false);
         selector(selecti+1);
@@ -24,7 +24,7 @@ function SelectedUser({ user_list, act_num, setAct, api_url, refi, selector, sel
   function send_email(){
     setLoad(true);
     axios
-        .post(api_url + "customers/", {
+        .post(api_url + "/customers/", {
           params: {title_mail: title, message_mail: message, to_mail: user_list},
         })
         .then((res) => {

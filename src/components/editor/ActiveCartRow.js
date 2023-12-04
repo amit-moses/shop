@@ -1,4 +1,4 @@
-function ActiveCartRow({ cartitem }) {
+function ActiveCartRow({ cartitem, api_url }) {
   const totalfor = cartitem.product.price * cartitem.quantity;
   return (
     <tr className="table-primary">
@@ -7,7 +7,7 @@ function ActiveCartRow({ cartitem }) {
           style={{ height: "35px" }}
           alt="..."
           className="img-fluid"
-          src={cartitem.product.image}
+          src={api_url +'/static'+ cartitem.product.image}
         />
       </td>
       <td colSpan="3">

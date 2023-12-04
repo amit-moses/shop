@@ -26,7 +26,7 @@ function LoginRegister({ api_url, refi, setCartId }) {
     setLoader(true);
     setErr(false);
     axios
-      .post(api_url + "token/", {
+      .post(api_url + "/token/", {
         username: my_username,
         password: my_password,
       })

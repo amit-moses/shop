@@ -14,7 +14,7 @@ function Products({
   const [pr_price, setProductPrice] = useState(0);
   const [pr_stock, setProductStock] = useState(0);
   const [pr_cat, setProductCat] = useState(1);
-  const [pr_image, setProductImage] = useState("");
+  const [pr_image1, setProductImage1] = useState();
   const [filter, setFilter] = useState(0);
   const [load_add, setLoad] = useState(false);
   const [search, setSearchKey] = useState("");
@@ -44,16 +44,21 @@ function Products({
       price: pr_price,
       stock: pr_stock,
       category: pr_cat,
-      image: pr_image,
+      image: pr_image1,
     };
+    console.log(product_to_add);
     axios
-      .post(api_url + "products/", product_to_add)
+      .post(api_url + "/products/", product_to_add, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setProductName("");
         setProductPrice(0);
         setProductCat(1);
         setProductStock(0);
-        setProductImage("");
+        setProductImage1();
         refresh();
         setLoad(false);
       })
@@ -149,13 +154,14 @@ function Products({
 
           <div className="form-floating mb-3">
             <input
-              id="inp5"
-              value={pr_image}
-              type="text"
+              multiple={false}
+              accept="image/*"
+              id="inp9"
+              type="file"
               className="form-control"
-              onChange={(e) => setProductImage(e.target.value)}
+              onChange={(e) => setProductImage1(e.target.files[0])}
             ></input>
-            <label htmlFor="inp5">product image url</label>
+            <label htmlFor="inp5">image</label>
           </div>
 
           <br />
@@ -175,8 +181,8 @@ function Products({
               <th scope="col">name</th>
               <th scope="col">price</th>
               <th scope="col">stock</th>
-              <th scope="col">product category</th>
-              <th scope="col">url image</th>
+              <th scope="col">category</th>
+              <th scope="col">image</th>
               <th scope="col"></th>
             </tr>
           </thead>

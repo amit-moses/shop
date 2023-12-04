@@ -13,7 +13,7 @@ function CartRow({cartitem, set_cart, api_url, cart_id}) {
         };
         setLoader(true);
         axios
-          .put(api_url + "cart/"+urlm+"/", product_to_add)
+          .put(api_url + "/cart/"+urlm+"/", product_to_add)
           .then((res) => {
             if(!cart_id){localStorage.setItem("cart_id", res.data.id);}
             set_cart(res.data);
@@ -33,7 +33,7 @@ function CartRow({cartitem, set_cart, api_url, cart_id}) {
           <img
             alt="..."
             className="img-fluid"
-            src={cartitem.product.image}
+            src={api_url +'/static'+ cartitem.product.image}
           />
         </div>
         <div className="col">

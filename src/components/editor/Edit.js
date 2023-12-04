@@ -41,7 +41,7 @@ function Edit({
     if (api_url && token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .get(api_url + "promo/")
+        .get(api_url + "/promo/")
         .then((res) => {
           setPromoList(res.data);
         })
@@ -50,7 +50,7 @@ function Edit({
         });
 
       axios
-        .get(api_url + "carts/")
+        .get(api_url + "/carts/")
         .then((res) => {
           setCarts(res.data);
           setLoad(false);
@@ -60,7 +60,7 @@ function Edit({
         });
 
         axios
-        .get(api_url + "customers/")
+        .get(api_url + "/customers/")
         .then((res) => {
           setCustomers(res.data);
         })
@@ -206,7 +206,7 @@ function Edit({
             aria-labelledby="pills-carts-tab"
           >
             <div className="row col-md-12">
-              <ActiveCarts load={load} carts_list={cart_list} />
+              <ActiveCarts api_url={api_url} load={load} carts_list={cart_list} />
             </div>
           </div>
 

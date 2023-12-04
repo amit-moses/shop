@@ -31,7 +31,7 @@ function Register({api_url, loader, setLoader, login_func}) {
    function register_func(){
     setLoader(true);
     axios
-          .post(api_url+"register/", {
+          .post(api_url+"/register/", {
             username: ed_username,
             email: ed_email,
             password: ed_password,
