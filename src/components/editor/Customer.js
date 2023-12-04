@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
+import { TfiWrite } from "react-icons/tfi";
 
 function Customer({ customer, visable, add_to, select_all, selector }) {
   const [selected, setSelected] = useState(false);
@@ -37,7 +38,7 @@ function Customer({ customer, visable, add_to, select_all, selector }) {
             <td colSpan="1">
               {format(new Date(customer.last_login), "dd/MM/yyyy")}
             </td>
-            <td colSpan="1">{customer.is_staff}</td>
+            <td colSpan="1">{customer.is_staff & <TfiWrite />}</td>
           </tr>
         </>
       )}
