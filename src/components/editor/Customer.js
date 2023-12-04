@@ -38,7 +38,7 @@ function Customer({ customer, visable, add_to, select_all, selector }) {
             <td colSpan="1">
               {format(new Date(customer.last_login), "dd/MM/yyyy")}
             </td>
-            <td colSpan="1">{customer.is_staff & <TfiWrite />}</td>
+            <td colSpan="1">{customer.is_staff ? <TfiWrite />: ""}</td>
           </tr>
         </>
       )}
