@@ -142,7 +142,7 @@ function Product({
                 style={{ height: "35px" }}
                 alt="..."
                 className="img-fluid"
-                src={api_url + "/static/media" + product.image}
+                src={api_url + "/static" + product.image}
               />
             )}
           </td>
