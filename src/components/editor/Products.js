@@ -54,12 +54,12 @@ function Products({
         },
       })
       .then((res) => {
+        refresh();
         setProductName("");
         setProductPrice(0);
         setProductCat(1);
         setProductStock(0);
         setProductImage1();
-        refresh();
         setLoad(false);
       })
       .catch((res) => {

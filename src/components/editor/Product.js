@@ -73,6 +73,7 @@ function Product({
       const deleted_arr = productList.filter((item) => item.id !== last_id);
       setProductsList(deleted_arr);
       setploader(-1);
+      refi();
     });
   }
   return (

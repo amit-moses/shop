@@ -37,6 +37,7 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
       const deleted_arr = categoryList.filter((item) => item.id !== last_id);
       setCategoryList(deleted_arr);
       setcaloader(-1);
+      refi();
     });
   }
   return (

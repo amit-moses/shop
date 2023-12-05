@@ -56,7 +56,8 @@ function App() {
     setRefresh(refresh_add + 1);
   }
   function refresh_func_item() {
-    setRefreshItems(refresh_items + 1);
+    const updator = refresh_items + 1;
+    setRefreshItems(updator);
   }
 
   useEffect(() => {

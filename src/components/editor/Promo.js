@@ -40,6 +40,7 @@ function Promo({ promo, api_url, promoList, setPromoList, refi }) {
       const deleted_arr = promoList.filter((item) => item.id !== last_id);
       setPromoList(deleted_arr);
       setcaloader(-1);
+      refi();
     });
   }
 
