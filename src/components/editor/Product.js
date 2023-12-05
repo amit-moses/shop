@@ -72,13 +72,12 @@ function Product({
     axios.delete(api_url + "/product/" + product.id + "/").then((res) => {
       const deleted_arr = productList.filter((item) => item.id !== last_id);
       setProductsList(deleted_arr);
-      refi();
-      setploader(false);
+      setploader(-1);
     });
   }
   return (
     <>
-      {visable && (
+      {(visable && pr_loader!==-1) && (
         <tr>
           <td>
             <input
@@ -142,7 +141,7 @@ function Product({
                 style={{ height: "35px" }}
                 alt="..."
                 className="img-fluid"
-                src={api_url + "/static" + product.image}
+                src={'https://storage.googleapis.com/shop-react-a.appspot.com/'+product.image}
               />
             )}
           </td>

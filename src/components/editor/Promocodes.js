@@ -5,7 +5,7 @@ import Loader from "../Loader";
 
 function Promocodes({api_url, promoList, setPromoList, refresh}) {
     const [p_code, setCode] = useState("");
-    const [p_dis, setDis] = useState();
+    const [p_dis, setDis] = useState(0);
     const [load_add, setLoad] = useState(false);
 
     function addPromo() {
@@ -21,7 +21,7 @@ function Promocodes({api_url, promoList, setPromoList, refresh}) {
           console.log(res.data);
           refresh();
           setCode("");
-          setDis("");
+          setDis(0);
           setLoad(false);
         }).catch((res) =>{
             console.log(res);
@@ -58,7 +58,7 @@ function Promocodes({api_url, promoList, setPromoList, refresh}) {
                 max="100"
                 type="number"
                 className="form-control"
-                onChange={(e) => setDis(e.target.value)}
+                onChange={(e) => setDis(parseInt(e.target.value))}
               ></input>
               <label htmlFor="inp5">discount</label>
             </div>

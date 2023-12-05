@@ -36,61 +36,61 @@ function Category({ category, api_url, refi, categoryList, setCategoryList }) {
     axios.delete(api_url + "/category/" + category.id + "/").then((res) => {
       const deleted_arr = categoryList.filter((item) => item.id !== last_id);
       setCategoryList(deleted_arr);
-      refi();
-      setcaloader(false);
+      setcaloader(-1);
     });
   }
   return (
     <>
-      <tr>
-        <td>
-          <input
-            type="text"
-            onChange={(e) => setEditorName(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_name}
-          ></input>
-        </td>
-        <td>
-          <input
-            type="text"
-            onChange={(e) => setEditorDes(e.target.value)}
-            disabled={editor ? false : true}
-            className={editor ? "form-control" : "form-control-plaintext"}
-            value={ed_des}
-          ></input>{" "}
-        </td>
-        {ca_loader ? (
+      {ca_loader !== -1 && (
+        <tr>
           <td>
-            <Loader loaderSize={8} inCart={""} isLoad={true} />
+            <input
+              type="text"
+              onChange={(e) => setEditorName(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_name}
+            ></input>
           </td>
-        ) : (
-          <>
+          <td>
+            <input
+              type="text"
+              onChange={(e) => setEditorDes(e.target.value)}
+              disabled={editor ? false : true}
+              className={editor ? "form-control" : "form-control-plaintext"}
+              value={ed_des}
+            ></input>{" "}
+          </td>
+          {ca_loader ? (
             <td>
-              <button
-              disabled={ca_loader}
-                onClick={() => setSaveOrEditor()}
-                type="button"
-                className="btn btn-primary"
-              >
-                {editor ? <MdSave /> : <MdModeEdit/>}
-              </button>
+              <Loader loaderSize={8} inCart={""} isLoad={true} />
             </td>
-            <td>
-              <button
-              disabled={ca_loader}
-                onClick={del_func}
-                type="button"
-                className="btn btn-danger"
-              >
-                <MdDelete />
-
-              </button>
-            </td>
-          </>
-        )}
-      </tr>
+          ) : (
+            <>
+              <td>
+                <button
+                  disabled={ca_loader}
+                  onClick={() => setSaveOrEditor()}
+                  type="button"
+                  className="btn btn-primary"
+                >
+                  {editor ? <MdSave /> : <MdModeEdit />}
+                </button>
+              </td>
+              <td>
+                <button
+                  disabled={ca_loader}
+                  onClick={del_func}
+                  type="button"
+                  className="btn btn-danger"
+                >
+                  <MdDelete />
+                </button>
+              </td>
+            </>
+          )}
+        </tr>
+      )}
     </>
   );
 }

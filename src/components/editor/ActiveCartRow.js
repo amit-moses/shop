@@ -7,7 +7,7 @@ function ActiveCartRow({ cartitem, api_url }) {
           style={{ height: "35px" }}
           alt="..."
           className="img-fluid"
-          src={api_url +'/static'+ cartitem.product.image}
+          src={'https://storage.googleapis.com/shop-react-a.appspot.com/'+cartitem.product.image}
         />
       </td>
       <td colSpan="3">

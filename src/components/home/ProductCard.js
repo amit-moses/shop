@@ -37,7 +37,7 @@ function ProductCard({ product, in_cart, api_url, set_cart, cart_id }) {
       <div className="card h-100">
         {/* <!-- Product image--> */}
         <div style={{position: "relative"}}>
-          <img style={boxstyle} className="card-img-top" src={api_url +'/static'+ product.image} alt="..." />
+          <img style={boxstyle} className="card-img-top" src={'https://storage.googleapis.com/shop-react-a.appspot.com/'+product.image} alt="..." />
         </div>
         {/* <!-- Product details--> */}
         <div className="card-body p-4">

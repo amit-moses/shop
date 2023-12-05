@@ -33,7 +33,7 @@ function CartRow({cartitem, set_cart, api_url, cart_id}) {
           <img
             alt="..."
             className="img-fluid"
-            src={api_url +'/static'+ cartitem.product.image}
+            src={'https://storage.googleapis.com/shop-react-a.appspot.com/'+cartitem.product.image}
           />
         </div>
         <div className="col">
